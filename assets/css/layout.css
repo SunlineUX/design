@@ -1,0 +1,326 @@
+/* ============================================================
+ * layout.css — 管理后台布局样式
+ *   复用 variables.css 的所有 CSS 变量，不硬编码颜色
+ *   实现：AppLayout / AppHeader / AppSidebar / Breadcrumb / SidebarItem
+ * ============================================================ */
+
+/* ---------- AppLayout 整体骨架 ---------- */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-page);
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.app-main {
+  flex: 1;
+  padding: var(--density-page);
+  overflow-y: auto;
+  min-width: 0;
+}
+
+/* ---------- AppHeader ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: 56px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--density-page);
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.app-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* ---------- Logo ---------- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* ---------- SidebarToggle ---------- */
+.sidebar-toggle {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-control);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+.sidebar-toggle:hover {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .9rem;
+  color: var(--text-secondary);
+}
+.breadcrumb-item {
+  color: var(--text-secondary);
+}
+.breadcrumb-item.active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.breadcrumb-sep {
+  color: var(--text-tertiary);
+}
+
+/* ---------- Header 右侧操作区 ---------- */
+.header-action {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+.header-action:hover {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+}
+
+.header-user {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: .85rem;
+  cursor: pointer;
+}
+
+/* ---------- AppSidebar ---------- */
+.app-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  padding: var(--space-md) 0;
+  transition: width var(--transition-base);
+  overflow: hidden;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+.app-sidebar.collapsed {
+  width: 56px;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 var(--space-sm);
+}
+
+/* ---------- SidebarItem ---------- */
+.sidebar-item-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 12px;
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+.sidebar-item-row:hover {
+  background: var(--bg-surface-3);
+  color: var(--text-primary);
+}
+.sidebar-item.active > .sidebar-item-row {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+.sidebar-item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+}
+.sidebar-item-label {
+  flex: 1;
+  font-size: .9rem;
+}
+.sidebar-item-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-tertiary);
+  transition: transform var(--transition-base);
+}
+.sidebar-item.expanded > .sidebar-item-row .sidebar-item-arrow {
+  transform: rotate(0deg);
+}
+
+/* 子菜单 */
+.sidebar-children {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 24px;
+  margin-top: 2px;
+}
+
+/* 折叠模式：隐藏文字，只留图标 */
+.app-sidebar.collapsed .sidebar-item-label,
+.app-sidebar.collapsed .sidebar-item-arrow,
+.app-sidebar.collapsed .sidebar-children {
+  display: none;
+}
+.app-sidebar.collapsed .sidebar-item-row {
+  justify-content: center;
+  padding: 8px;
+}
+
+/* ---------- 视图标题 ---------- */
+.view-title {
+  margin-bottom: var(--space-lg);
+  font-size: 1.5rem;
+}
+
+.view-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--density-gap);
+}
+
+/* ---------- PanelCard 相关 ---------- */
+.panel-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.panel-card-title {
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.panel-card-body {
+  padding: 16px 20px;
+}
+
+.panel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: 8px 0;
+}
+.panel-row + .panel-row {
+  border-top: 1px dashed var(--border-color);
+}
+.panel-row-label {
+  display: flex;
+  flex-direction: column;
+}
+.panel-row-title {
+  font-weight: 500;
+  font-size: .9rem;
+}
+
+/* 调试信息行 */
+.panel-debug {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  color: var(--text-secondary);
+}
+.debug-key {
+  color: var(--text-tertiary);
+}
+.debug-sep {
+  color: var(--text-tertiary);
+}
+
+/* ---------- About 列表 ---------- */
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.about-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+.about-list li:last-child {
+  border-bottom: 0;
+}
+.about-list li::before {
+  content: '•';
+  color: var(--color-primary);
+  margin-right: 10px;
+}

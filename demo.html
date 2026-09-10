@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme-color="indigo" data-theme="light" data-density="comfortable" data-radius="medium">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NCBS · Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./assets/css/variables.css" />
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/layout.css" />
+  <link rel="stylesheet" href="./assets/font/iconfont.css" />
+
+  <!-- 路由过渡 -->
+  <style>
+    .fade-enter-active, .fade-leave-active { transition: opacity 180ms ease; }
+    .fade-enter-from, .fade-leave-to { opacity: 0; }
+  </style>
+
+  <!-- 防首屏闪烁 -->
+  <script>
+    (function () {
+      try {
+        var raw = localStorage.getItem('design.settings.v1');
+        var s = raw ? JSON.parse(raw) : {};
+        var root = document.documentElement;
+        if (s.themeColor) root.setAttribute('data-theme-color', s.themeColor);
+        if (s.colorMode)  root.setAttribute('data-theme', s.colorMode === 'system'
+          ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : s.colorMode);
+        if (s.density)    root.setAttribute('data-density', s.density);
+        if (s.radius)     root.setAttribute('data-radius', s.radius);
+        if (s.locale)     root.setAttribute('lang', s.locale);
+      } catch (e) { /* 忽略 */ }
+    })();
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- ============================================================
+       JS 依赖顺序（严格按此）：
+       Vue → Vue Router → i18n → settings → routes →
+       base → layout → panels → views → 注册 → 应用启动
+  ============================================================ -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.prod.js"></script>
+  <script src="./assets/js/i18n.js"></script>
+  <script src="./assets/js/settings.js"></script>
+  <script src="./assets/js/routes.js"></script>
+  <script src="./assets/js/components/base/BaseComponents.js"></script>
+  <script src="./assets/js/components/layout/LayoutComponents.js"></script>
+  <script src="./assets/js/components/panels/PanelComponents.js"></script>
+  <script src="./assets/js/components/views/ViewComponents.js"></script>
+  <script src="./assets/js/components/index.js"></script>
+
+  <!-- ============ 应用启动 ============ -->
+  <script>
+    (function () {
+      'use strict';
+      const { createApp, computed, ref } = window.Vue;
+      const { createRouter, createWebHashHistory } = window.VueRouter;
+
+      /* 1. 设置 & i18n */
+      const settings = window.Settings.create();
+      const state = settings.state;
+      const resolvedMode = settings.resolvedMode;
+      const dict = computed(() => window.I18N[state.locale] || window.I18N['zh-CN']);
+      const t = (key) => key.split('.').reduce((acc, k) => (acc ? acc[k] : ''), dict.value);
+
+      /* 2. 路由（使用 Hash 模式，静态服务器无需额外配置） */
+      const router = createRouter({
+        history: createWebHashHistory(),
+        routes: window.Routes.buildRoutes(),
+      });
+
+      /* 3. 创建应用 */
+      const app = createApp({
+        setup() {
+          const collapsed = ref(false);
+          const toggleCollapse = () => { collapsed.value = !collapsed.value; };
+
+          return {
+            state,
+            resolvedMode,
+            t,
+            enums: settings.enums,
+            collapsed,
+            toggleCollapse,
+            menuItems: window.Routes.menuRoutes,
+          };
+        },
+
+        template: `
+          <app-layout
+            :menu-items="menuItems"
+            :collapsed="collapsed"
+            @update:collapsed="collapsed = $event"
+            :t="t"
+          >
+            <template #header-actions>
+              <!-- 语言切换 -->
+              <div class="segmented">
+                <button
+                  v-for="opt in enums.locale"
+                  :key="opt.value"
+                  :class="{ active: state.locale === opt.value }"
+                  @click="state.locale = opt.value"
+                >{{ opt.label }}</button>
+              </div>
+
+              <!-- 深浅模式 -->
+              <button class="header-action"
+                      :title="resolvedMode === 'dark' ? t('settings.options.dark') : t('settings.options.light')"
+                      @click="state.colorMode = resolvedMode === 'dark' ? 'light' : 'dark'">
+                <icon :name="resolvedMode === 'dark' ? 'moon' : 'sun'" :size="18" />
+              </button>
+
+              <!-- 设置 -->
+              <button class="header-action" title="Settings">
+                <icon name="settings" :size="18" />
+              </button>
+
+              <!-- 用户头像 -->
+              <div class="header-user">U</div>
+            </template>
+          </app-layout>
+        `,
+      });
+
+      /* 4. 全局注册 + 注入 */
+      window.registerComponents(app);
+      app.provide('settings', settings);
+      app.provide('t', t);
+      app.config.globalProperties.t = t; // 给 Breadcrumb 的 $root.t 用
+
+      /* 5. 挂载 */
+      app.use(router);
+      app.mount('#app');
+    })();
+  </script>
+</body>
+</html>

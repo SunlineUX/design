@@ -1,0 +1,168 @@
+/* ============================================================
+ * i18n.js - 中英文语言包
+ *   使用：window.I18N[lang].key 即可拿到对应文案
+ *   app.js 内部通过响应式 settings.locale 切换
+ * ============================================================ */
+window.I18N = {
+  'zh-CN': {
+    app: {
+      title: '设计工程框架',
+      subtitle: '基于纯 HTML + Vue 的多主题切换示例工程',
+    },
+    nav: {
+      home: '首页',
+      about: '关于',
+      system: '系统管理',
+      systemUsers: '用户管理',
+      systemRoles: '角色管理',
+      settings: '设置',
+    },
+    common: {
+      system: '跟随系统',
+      toggleSidebar: '切换侧边栏',
+      collapseSidebar: '折叠侧边栏',
+      expandSidebar: '展开侧边栏',
+    },
+    about: {
+      routing: '路由管理：动态模块化路由 + 守卫',
+      state: '状态管理：响应式设置 + localStorage 持久化',
+      components: '组件管理：自研基础组件 + 全局注册',
+      layout: '布局管理：可切换布局（AppLayout / BlankLayout）',
+      theme: '主题管理：CSS 变量 + 深浅色切换 + 主题色',
+      i18n: '国际化：中英文切换，模块化语言包',
+    },
+    hero: {
+      title: '统一变量驱动的视觉系统',
+      desc: '通过 HTML 根元素的 data-* 属性即可切换主题色、深浅模式、页面宽松度与圆角风格，所有变化均由 CSS 变量驱动，无需重新编译。',
+    },
+    settings: {
+      title: '外观设置',
+      sectionAppearance: '外观',
+      sectionLanguage: '语言',
+      language: '界面语言',
+      languageDesc: '切换中英文显示',
+      themeColor: '主题色彩',
+      themeColorDesc: '影响按钮、链接等强调元素',
+      colorMode: '深色 / 浅色',
+      colorModeDesc: '切换整体明暗基调',
+      density: '页面宽松度',
+      densityDesc: '调节间距与留白',
+      radius: '圆角风格',
+      radiusDesc: '调节组件圆角大小',
+      options: {
+        light: '浅色',
+        dark: '深色',
+        compact: '紧凑',
+        comfortable: '舒适',
+        loose: '宽松',
+        sharp: '锐利',
+        medium: '中等',
+        round: '圆润',
+        pill: '药丸',
+      },
+      save: '保存设置',
+      reset: '恢复默认',
+      savedTip: '设置已保存',
+      resetTip: '已恢复默认设置',
+    },
+    gallery: {
+      title: '组件预览',
+      desc: '以下组件均会即时响应顶部设置项的变化。',
+      typography: '排版',
+      buttons: '按钮',
+      forms: '表单',
+      sampleInput: '示例输入框',
+      sampleSelect: '示例下拉框',
+      textarea: '多行文本',
+      chips: '标签',
+      cards: '卡片',
+      cardContent: '此卡片使用 CSS 变量定义的圆角、间距与阴影，可随时调节。',
+    },
+    footer: {
+      hint: '提示：所有设置通过 localStorage 自动持久化，刷新页面不会丢失。',
+    },
+  },
+
+  'en-US': {
+    app: {
+      title: 'Design Skeleton',
+      subtitle: 'A pure HTML + Vue scaffold with multi-theme switching',
+    },
+    nav: {
+      home: 'Home',
+      about: 'About',
+      system: 'System',
+      settings: 'Settings',
+    },
+    common: {
+      system: 'Follow system',
+      toggleSidebar: 'Toggle sidebar',
+      collapseSidebar: 'Collapse sidebar',
+      expandSidebar: 'Expand sidebar',
+    },
+    about: {
+      routing: 'Routing: dynamic modular routes + guards',
+      state: 'State: reactive settings + localStorage persistence',
+      components: 'Components: custom base components + global registration',
+      layout: 'Layout: switchable layouts (AppLayout / BlankLayout)',
+      theme: 'Theme: CSS variables + light/dark + accent color',
+      i18n: 'i18n: EN/ZH switching, modular language packs',
+    },
+    hero: {
+      title: 'A variable-driven visual system',
+      desc: 'Toggle theme color, light/dark mode, density and radius via data-* attributes on the <html> element. Everything is driven by CSS variables — no build step required.',
+    },
+    settings: {
+      title: 'Appearance',
+      sectionAppearance: 'Appearance',
+      sectionLanguage: 'Language',
+      language: 'Interface language',
+      languageDesc: 'Switch between Chinese and English',
+      themeColor: 'Theme color',
+      themeColorDesc: 'Affects buttons, links and other accents',
+      colorMode: 'Light / Dark',
+      colorModeDesc: 'Toggle overall brightness',
+      density: 'Page density',
+      densityDesc: 'Adjust spacing and whitespace',
+      radius: 'Corner radius',
+      radiusDesc: 'Adjust component roundness',
+      options: {
+        light: 'Light',
+        dark: 'Dark',
+        compact: 'Compact',
+        comfortable: 'Comfortable',
+        loose: 'Loose',
+        sharp: 'Sharp',
+        medium: 'Medium',
+        round: 'Round',
+        pill: 'Pill',
+      },
+      save: 'Save',
+      reset: 'Reset',
+      savedTip: 'Settings saved',
+      resetTip: 'Settings reset to defaults',
+    },
+    gallery: {
+      title: 'Component Gallery',
+      desc: 'These components respond live to the settings above.',
+      typography: 'Typography',
+      buttons: 'Buttons',
+      forms: 'Forms',
+      sampleInput: 'Sample input',
+      sampleSelect: 'Sample select',
+      textarea: 'Textarea',
+      chips: 'Chips',
+      cards: 'Cards',
+      cardContent: 'This card uses CSS variables for radius, spacing and shadow — tweak them anytime.',
+    },
+    footer: {
+      hint: 'Tip: settings are persisted via localStorage and survive page refreshes.',
+    },
+  },
+};
+
+/* 可用语言列表（用于设置面板渲染） */
+window.I18N_LIST = [
+  { value: 'zh-CN', label: '中文' },
+  { value: 'en-US', label: 'English' },
+];
