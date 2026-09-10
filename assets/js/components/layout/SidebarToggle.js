@@ -12,7 +12,7 @@
     emits: ['toggle'],
     template: `
       <button class="sidebar-toggle" @click="$emit('toggle')" :title="collapsed ? '展开侧边栏' : '折叠侧边栏'">
-        <icon :name="collapsed ? 'chevronRight' : 'chevronLeft'" :size="18" />
+        <icon :name="collapsed ? 'sidebarLeftCollapse' : 'sidebarLeftExpand'" :size="18" />
       </button>
     `,
   };

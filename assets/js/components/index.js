@@ -22,6 +22,9 @@
   /* ---------- 资源路径（基于本文件位置推导，与页面位置无关） ---------- */
   const HERE = new URL('./', document.currentScript.src).href;                     // .../assets/js/components/
 
+  /* ---------- 缓存版本号：修改组件后刷新页面不生效时，把版本号 +1 ---------- */
+  const VER = '3';
+
   /* ---------- 共享组件清单：新增基础/布局/面板组件在这里加一行 ---------- */
   const MANIFEST = {
     base: [
@@ -46,7 +49,7 @@
 
   /* ---------- 同步按序加载（须在 HTML 解析期间执行） ---------- */
   (function load() {
-    const write = src => document.write('<script src="' + src + '"><\/script>');
+    const write = src => document.write('<script src="' + src + '?v=' + VER + '"><\/script>');
     MANIFEST.base.forEach(f => write(HERE + f));
     MANIFEST.layout.forEach(f => write(HERE + f));
     MANIFEST.panels.forEach(f => write(HERE + f));

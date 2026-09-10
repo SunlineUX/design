@@ -14,6 +14,9 @@
 
   const HERE = new URL('./', document.currentScript.src).href;  // .../datamind/
 
+  /* ---------- 缓存版本号：修改页面视图后刷新不生效时，把版本号 +1 ---------- */
+  const VER = '1';
+
   /* ---------- 本项目视图清单：新增页面在这里加一行 ---------- */
   const VIEWS = [
     'pages/HomeView.js',
@@ -23,6 +26,6 @@
   ];
 
   /* ---------- 同步按序加载（须在 HTML 解析期间执行） ---------- */
-  const write = src => document.write('<script src="' + src + '"><\/script>');
+  const write = src => document.write('<script src="' + src + '?v=' + VER + '"><\/script>');
   VIEWS.forEach(f => write(HERE + f));
 })();

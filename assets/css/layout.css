@@ -66,13 +66,16 @@
   width: 28px;
   height: 28px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  /* color: #fff;
+  font-size: 12px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  font-size: 12px;
   font-weight: 800;
+  background-image: url('../logo.svg');
+  background-size: cover;
+  background-position: center;
 }
 
 /* ---------- SidebarToggle ---------- */

@@ -15,6 +15,7 @@
       size: { type: [String, Number], default: 16 },
     },
     setup(props) {
+      const { computed } = global.Vue;
       // 名称 → iconfont class（Dm- 前缀）
       const MAP = {
         home:     'Dm-Home',
@@ -23,16 +24,23 @@
         chevronLeft:  'Dm-ArrowLeft',
         chevronRight: 'Dm-ArrowRight',
         chevronDown:  'Dm-ArrowDown',
+        sidebarLeftExpand:   'Dm-SidebarLeftExpand',
+        sidebarLeftCollapse: 'Dm-SidebarLeftCollapse',
         globe:    'Dm-BandCard',
         settings: 'Dm-Setting',
         user:     'Dm-UserInfo',
         system:   'Dm-Cpu',
       };
-      const cls = MAP[props.name];
-      const isFontIcon = !!cls;
-      const fallback = (!isFontIcon && props.name === 'sun') ? '☀'
-                      : (!isFontIcon && props.name === 'moon') ? '☾'
-                      : '';
+      // 必须用 computed：name prop 会动态变化（如折叠按钮 chevronLeft↔chevronRight），
+      // setup 只执行一次，普通常量不会随 prop 更新
+      const cls = computed(() => MAP[props.name] || '');
+      const isFontIcon = computed(() => !!cls.value);
+      const fallback = computed(() => {
+        if (isFontIcon.value) return '';
+        if (props.name === 'sun') return '☀';
+        if (props.name === 'moon') return '☾';
+        return '';
+      });
       return { cls, isFontIcon, fallback };
     },
     template: `

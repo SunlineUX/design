@@ -11,7 +11,7 @@
     template: `
       <div class="logo">
         <span class="logo-mark"></span>
-        <span class="logo-text">NCBS</span>
+        <span class="logo-text">Datamind</span>
       </div>
     `,
   };
