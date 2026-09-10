@@ -1,51 +1,75 @@
 /* ============================================================
- * components/index.js — 组件统一注册入口
+ * components/index.js — 共享组件统一入口（清单 + 加载器 + 注册器）
  *
- *   依赖顺序（必须按此顺序在 HTML 中 <script> 引入）：
- *     1. Vue 3 CDN
- *     2. i18n.js
- *     3. settings.js
- *     4. base/BaseComponents.js
- *     5. layout/LayoutComponents.js
- *     6. panels/PanelComponents.js
- *     7. views/ViewComponents.js
- *     8. components/index.js  ← 本文件
+ *   HTML 中只需引入本文件：
+ *     <script src="./assets/js/components/index.js"></script>
  *
- *   注册完成后，HTML in-DOM 模板中可直接使用组件标签：
- *     <app-layout> <app-header> <app-sidebar> <home-view> ...
+ *   它做三件事：
+ *     1. MANIFEST 声明共享组件文件清单（新增组件在这里加一行）
+ *     2. 按依赖顺序同步加载（document.write，仅在 HTML 解析期可用）
+ *     3. 提供 registerComponents(app) 供应用启动时自动注册全部组件
+ *
+ *   注意：views（页面视图）不在此处加载 —— 各项目入口（如
+ *   datamind/index.html）用自己的 views.js 配置文件加载本项目的页面。
+ *
+ *   依赖顺序（MANIFEST 内的分组顺序）：
+ *     Vue → Vue Router → i18n → settings → routes →
+ *     base → layout → panels → 本文件 → 各项目 views.js → 应用启动
  * ============================================================ */
 (function (global) {
   'use strict';
 
+  /* ---------- 资源路径（基于本文件位置推导，与页面位置无关） ---------- */
+  const HERE = new URL('./', document.currentScript.src).href;                     // .../assets/js/components/
+
+  /* ---------- 共享组件清单：新增基础/布局/面板组件在这里加一行 ---------- */
+  const MANIFEST = {
+    base: [
+      'base/Icon.js',
+      'base/BaseButton.js',
+      'base/SegmentedControl.js',
+      'base/Badge.js',
+    ],
+    layout: [
+      'layout/Logo.js',
+      'layout/Breadcrumb.js',
+      'layout/SidebarToggle.js',
+      'layout/SidebarItem.js',
+      'layout/AppSidebar.js',
+      'layout/AppHeader.js',
+      'layout/AppLayout.js',
+    ],
+    panels: [
+      'panels/PanelComponents.js',
+    ],
+  };
+
+  /* ---------- 同步按序加载（须在 HTML 解析期间执行） ---------- */
+  (function load() {
+    const write = src => document.write('<script src="' + src + '"><\/script>');
+    MANIFEST.base.forEach(f => write(HERE + f));
+    MANIFEST.layout.forEach(f => write(HERE + f));
+    MANIFEST.panels.forEach(f => write(HERE + f));
+  })();
+
+  /* ---------- PascalCase → kebab-case：HomeView → home-view ---------- */
+  function toKebab(name) {
+    return name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  }
+
+  /* ---------- 自动遍历注册全部组件 ---------- */
+  function registerAll(app, namespace) {
+    const components = global[namespace] || {};
+    Object.keys(components).forEach(key => {
+      app.component(toKebab(key), components[key]);
+    });
+  }
+
   function registerComponents(app) {
-    /* 基础 UI 组件 */
-    const B = global.BaseComponents || {};
-    app.component('icon', B.Icon);
-    app.component('base-button', B.BaseButton);
-    app.component('segmented-control', B.SegmentedControl);
-    app.component('badge', B.Badge);
-
-    /* 布局组件 */
-    const L = global.LayoutComponents || {};
-    app.component('logo', L.Logo);
-    app.component('breadcrumb', L.Breadcrumb);
-    app.component('sidebar-toggle', L.SidebarToggle);
-    app.component('sidebar-item', L.SidebarItem);
-    app.component('app-sidebar', L.AppSidebar);
-    app.component('app-header', L.AppHeader);
-    app.component('app-layout', L.AppLayout);
-
-    /* 业务面板组件 */
-    const P = global.PanelComponents || {};
-    app.component('panel-card', P.PanelCard);
-    app.component('theme-switcher', P.ThemeSwitcher);
-    app.component('language-panel', P.LanguagePanel);
-    app.component('color-picker', P.ColorPicker);
-
-    /* 页面视图组件 */
-    const V = global.ViewComponents || {};
-    app.component('home-view', V.HomeView);
-    app.component('about-view', V.AboutView);
+    registerAll(app, 'BaseComponents');     /* <icon> <base-button> ... */
+    registerAll(app, 'LayoutComponents');   /* <app-layout> <sidebar-item> ... */
+    registerAll(app, 'PanelComponents');    /* <panel-card> <theme-switcher> ... */
+    registerAll(app, 'ViewComponents');     /* <home-view> <about-view> ... */
   }
 
   global.registerComponents = registerComponents;

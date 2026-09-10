@@ -93,6 +93,8 @@ window.I18N = {
       about: 'About',
       system: 'System',
       settings: 'Settings',
+      systemUsers: 'System Users',
+      systemRoles: 'System Roles',
     },
     common: {
       system: 'Follow system',

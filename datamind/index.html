@@ -6,11 +6,11 @@
   <title>NCBS · Dashboard</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="./assets/css/variables.css" />
-  <link rel="stylesheet" href="./assets/css/base.css" />
-  <link rel="stylesheet" href="./assets/css/components.css" />
-  <link rel="stylesheet" href="./assets/css/layout.css" />
-  <link rel="stylesheet" href="./assets/font/iconfont.css" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/layout.css" />
+  <link rel="stylesheet" href="../assets/font/iconfont.css" />
 
   <!-- 路由过渡 -->
   <style>
@@ -42,18 +42,18 @@
   <!-- ============================================================
        JS 依赖顺序（严格按此）：
        Vue → Vue Router → i18n → settings → routes →
-       base → layout → panels → views → 注册 → 应用启动
+       components/index.js（内含组件清单，自动按序加载 base/layout/panels/views）
+       → 应用启动
   ============================================================ -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.prod.js"></script>
-  <script src="./assets/js/i18n.js"></script>
-  <script src="./assets/js/settings.js"></script>
-  <script src="./assets/js/routes.js"></script>
-  <script src="./assets/js/components/base/BaseComponents.js"></script>
-  <script src="./assets/js/components/layout/LayoutComponents.js"></script>
-  <script src="./assets/js/components/panels/PanelComponents.js"></script>
-  <script src="./assets/js/components/views/ViewComponents.js"></script>
-  <script src="./assets/js/components/index.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/settings.js"></script>
+  <script src="../assets/js/routes.js"></script>
+  <!-- 一个文件引入全部共享组件（清单见 assets/js/components/index.js 的 MANIFEST） -->
+  <script src="../assets/js/components/index.js"></script>
+  <!-- 本项目专属视图（清单见 datamind/views.js，不与其他项目共用） -->
+  <script src="./views.js"></script>
 
   <!-- ============ 应用启动 ============ -->
   <script>
@@ -69,10 +69,26 @@
       const dict = computed(() => window.I18N[state.locale] || window.I18N['zh-CN']);
       const t = (key) => key.split('.').reduce((acc, k) => (acc ? acc[k] : ''), dict.value);
 
-      /* 2. 路由（使用 Hash 模式，静态服务器无需额外配置） */
+      /* 2. 本页菜单 + 路由配置（Hash 模式）
+       *    componentKey 对应 views/ 中自注册的视图组件名
+       *    所有 path 用绝对路径；有 children 的项自动转为嵌套路由 */
+      const menuRoutes = [
+        { key: 'home',   path: '/home',         label: 'nav.home',    icon: 'home',    componentKey: 'HomeView' },
+        { key: 'about',  path: '/about',        label: 'nav.about',   icon: 'about',   componentKey: 'AboutView' },
+        {
+          key: 'system',
+          path: '/system',
+          label: 'nav.system',
+          icon: 'system',
+          children: [
+            { key: 'system-users', path: '/system/users', label: 'nav.systemUsers', icon: 'user',     componentKey: 'SystemUsersView' },
+            { key: 'system-roles', path: '/system/roles', label: 'nav.systemRoles', icon: 'settings', componentKey: 'SystemRolesView' },
+          ],
+        },
+      ];
       const router = createRouter({
         history: createWebHashHistory(),
-        routes: window.Routes.buildRoutes(),
+        routes: window.Routes.buildRoutes(menuRoutes),
       });
 
       /* 3. 创建应用 */
@@ -88,7 +104,7 @@
             enums: settings.enums,
             collapsed,
             toggleCollapse,
-            menuItems: window.Routes.menuRoutes,
+            menuItems: menuRoutes,
           };
         },
 
@@ -118,9 +134,9 @@
               </button>
 
               <!-- 设置 -->
-              <button class="header-action" title="Settings">
+              <!--<button class="header-action" title="Settings">
                 <icon name="settings" :size="18" />
-              </button>
+              </button>-->
 
               <!-- 用户头像 -->
               <div class="header-user">U</div>
