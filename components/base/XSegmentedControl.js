@@ -1,13 +1,13 @@
 /* ============================================================
- * base/SegmentedControl.js — 分段选择器
- *   自注册到 window.BaseComponents
+ * base/XSegmentedControl.js — 分段选择器（X 前缀基础组件）
+ *   自注册到 window.XComponents，模板中使用 <x-segmented-control>
  * ============================================================ */
 (function (global) {
   'use strict';
 
-  global.BaseComponents = global.BaseComponents || {};
+  global.XComponents = global.XComponents || {};
 
-  global.BaseComponents.SegmentedControl = {
+  global.XComponents.XSegmentedControl = {
     props: {
       modelValue: { type: [String, Number], required: true },
       options: { type: Array, required: true }, // [{value, label}]

@@ -10,7 +10,6 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  padding: var(--density-control-pad);
   border: 1px solid var(--border-color-strong);
   background: var(--bg-surface);
   color: var(--text-primary);
@@ -42,7 +41,11 @@
 }
 .btn-ghost:hover { background: var(--bg-surface-3); }
 
-.btn-sm { padding: 4px 10px; font-size: .85rem; }
+.btn-sm { height: 32px; font-size: .85rem; padding: 0 var(--space-md); border-radius: var(--radius-sm); }
+.btn-md { height: 40px; font-size: 1rem; padding: 0 var(--space-lg); border-radius: var(--radius-md); }
+.btn-lg { height: 48px; font-size: 1.2rem; padding: 0 var(--space-2xl); border-radius: var(--radius-lg); }
+
+
 
 /* ---------- 卡片 ---------- */
 .card {
@@ -75,6 +78,79 @@
   box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 .textarea { resize: vertical; min-height: 96px; }
+
+/* ---------- 复选框 / 单选框 ---------- */
+.x-checkbox,
+.x-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: 24px;
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+.x-checkbox__input,
+.x-radio__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.x-checkbox__control,
+.x-radio__control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border-color-strong);
+  background: var(--bg-surface);
+  transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.x-checkbox__control { border-radius: var(--radius-sm); }
+.x-radio__control { border-radius: var(--radius-pill); }
+.x-checkbox__input:checked + .x-checkbox__control,
+.x-radio__input:checked + .x-radio__control {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+.x-checkbox__input:checked + .x-checkbox__control::after {
+  width: 8px;
+  height: 4px;
+  border: solid var(--text-inverse);
+  border-width: 0 0 2px 2px;
+  transform: translateY(-1px) rotate(-45deg);
+  content: '';
+}
+.x-radio__input:checked + .x-radio__control::after {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--text-inverse);
+  content: '';
+}
+.x-checkbox__input:focus-visible + .x-checkbox__control,
+.x-radio__input:focus-visible + .x-radio__control {
+  box-shadow: 0 0 0 3px var(--color-primary-focus);
+}
+.x-checkbox--disabled,
+.x-radio--disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.x-checkbox__label,
+.x-radio__label { line-height: 1.4; }
+.x-radio-group {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: start;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
 
 /* ---------- Chip / 标签 ---------- */
 .chip {
@@ -161,12 +237,25 @@
   width: 28px;
   height: 28px;
   border-radius: var(--radius-pill);
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   cursor: pointer;
+  box-sizing: border-box;
   transition: transform var(--transition-base), border-color var(--transition-base);
 }
 .swatch:hover { transform: scale(1.1); }
-.swatch.active { border-color: var(--text-primary); }
+.swatch.active { border-color: var(--text-primary); position: relative;}
+.swatch.active::after {  
+  position: absolute;  
+  content: '';
+   pointer-events: none; 
+   width: 12px;
+  height: 6px; 
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-50deg) translate(-50% ,-50%);
+  top: 20%;
+  left: 50%;
+}
 
 /* ---------- 顶部导航 ---------- */
 .app-header {
@@ -249,3 +338,183 @@
 }
 .hero h1 { margin-bottom: var(--space-sm); }
 .hero p { color: var(--text-secondary); max-width: 60ch; }
+
+/* ============================================================
+ * X 前缀浮层组件：XDropdown / XPopover / XTooltip
+ * 所有颜色取 CSS 变量，自动适配深浅模式 / 主题色
+ * ============================================================ */
+
+/* ---------- XDropdown 下拉菜单 ---------- */
+.x-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.x-dropdown__trigger { display: inline-flex; }
+.x-dropdown__menu {
+  position: absolute;
+  z-index: 100;
+  min-width: 160px;
+  padding: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+.x-dropdown--bottom-start .x-dropdown__menu { top: calc(100% + 6px); left: 0; }
+.x-dropdown--bottom-end   .x-dropdown__menu { top: calc(100% + 6px); right: 0; }
+.x-dropdown--top-start    .x-dropdown__menu { bottom: calc(100% + 6px); left: 0; }
+.x-dropdown--top-end      .x-dropdown__menu { bottom: calc(100% + 6px); right: 0; }
+
+.x-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+.x-dropdown-item:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.x-dropdown-item--danger:hover {
+  background: var(--color-danger);
+  color: #fff;
+}
+.x-dropdown-item--disabled {
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.x-dropdown-divider {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--border-color);
+}
+.x-dropdown-menu-tip {
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+/* 下拉进出动画 */
+.x-drop-enter-active, .x-drop-leave-active {
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+.x-drop-enter-from, .x-drop-leave-to {
+  opacity: 0;
+  transform: translateY(-4px) scale(.98);
+}
+
+/* ---------- XPopover 气泡浮层 ---------- */
+.x-popover {
+  position: relative;
+  display: inline-block;
+}
+.x-popover__trigger { display: inline-flex; }
+.x-popover__content {
+  position: absolute;
+  z-index: 100;
+  min-width: 180px;
+  max-width: 320px;
+  padding: 12px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+.x-popover__content--top    { bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+.x-popover__content--bottom { top: calc(100% + 10px);    left: 50%; transform: translateX(-50%); }
+.x-popover__content--left   { right: calc(100% + 10px);  top: 50%;  transform: translateY(-50%); }
+.x-popover__content--right  { left: calc(100% + 10px);   top: 50%;  transform: translateY(-50%); }
+
+.x-popover__title {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.x-popover__body {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* 小箭头（45° 方块，两边带边框） */
+.x-popover__arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--bg-surface);
+  transform: rotate(45deg);
+}
+.x-popover__arrow--top    { bottom: -6px; left: 50%; margin-left: -5px; border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+.x-popover__arrow--bottom { top: -6px;    left: 50%; margin-left: -5px; border-left: 1px solid var(--border-color);  border-top: 1px solid var(--border-color); }
+.x-popover__arrow--left   { right: -6px;  top: 50%;  margin-top: -5px;  border-left: 1px solid var(--border-color);  border-top: 1px solid var(--border-color); }
+.x-popover__arrow--right  { left: -6px;   top: 50%;  margin-top: -5px;  border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+
+/* 浮层进出动画 */
+.x-pop-enter-active, .x-pop-leave-active {
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+.x-pop-enter-from, .x-pop-leave-to { opacity: 0; }
+.x-popover--top    .x-pop-enter-from, .x-popover--top    .x-pop-leave-to { transform: translateX(-50%) translateY(4px); }
+.x-popover--bottom .x-pop-enter-from, .x-popover--bottom .x-pop-leave-to { transform: translateX(-50%) translateY(-4px); }
+.x-popover--left   .x-pop-enter-from, .x-popover--left   .x-pop-leave-to { transform: translateY(-50%) translateX(4px); }
+.x-popover--right  .x-pop-enter-from, .x-popover--right  .x-pop-leave-to { transform: translateY(-50%) translateX(-4px); }
+
+/* ---------- XTooltip 文字提示（纯 CSS hover/focus） ---------- */
+.x-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+.x-tooltip__trigger { display: inline-flex; }
+.x-tooltip__inner {
+  position: absolute;
+  z-index: 200;
+  padding: 6px 10px;
+  background: var(--text-primary);          /* 深底浅字；深色模式下自动反色 */
+  color: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: normal;
+  text-align: center;
+  max-width: 240px;
+  width: max-content;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+.x-tooltip--top    .x-tooltip__inner { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+.x-tooltip--bottom .x-tooltip__inner { top: calc(100% + 8px);    left: 50%; transform: translateX(-50%); }
+.x-tooltip--left   .x-tooltip__inner { right: calc(100% + 8px);  top: 50%;  transform: translateY(-50%); }
+.x-tooltip--right  .x-tooltip__inner { left: calc(100% + 8px);   top: 50%;  transform: translateY(-50%); }
+
+.x-tooltip:hover .x-tooltip__inner,
+.x-tooltip:focus-within .x-tooltip__inner {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Tooltip 小箭头 */
+.x-tooltip__arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--text-primary);
+  transform: rotate(45deg);
+}
+.x-tooltip--top    .x-tooltip__arrow { bottom: -4px; left: 50%; margin-left: -4px; }
+.x-tooltip--bottom .x-tooltip__arrow { top: -4px;    left: 50%; margin-left: -4px; }
+.x-tooltip--left   .x-tooltip__arrow { right: -4px;  top: 50%;  margin-top: -4px; }
+.x-tooltip--right  .x-tooltip__arrow { left: -4px;   top: 50%;  margin-top: -4px; }
+
+

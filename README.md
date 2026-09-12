@@ -77,7 +77,7 @@ views (页面视图)
 AppLayout (整体骨架)
 ├── AppHeader (顶栏)
 │   ├── Logo
-│   ├── SidebarToggle
+│   ├── SidebarControl
 │   ├── Breadcrumb
 │   └── HeaderActions (slot)
 │       ├── SegmentedControl (语言)

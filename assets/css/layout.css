@@ -66,20 +66,18 @@
   width: 28px;
   height: 28px;
   border-radius: var(--radius-md);
-  /* color: #fff;
-  font-size: 12px;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  background-image: url('../logo.svg');
-  background-size: cover;
-  background-position: center;
+}
+.logo-mark img {
+  width: 100%;
+  height: 100%;
 }
 
-/* ---------- SidebarToggle ---------- */
-.sidebar-toggle {
+
+/* ---------- SidebarControl ---------- */
+.sidebar-control {
   width: 32px;
   height: 32px;
   display: inline-flex;
@@ -196,6 +194,9 @@
   color: var(--color-primary);
   font-weight: 500;
 }
+.sidebar-item.has-children > .sidebar-item-row {
+  background: transparent !important;
+}
 .sidebar-item-icon {
   display: inline-flex;
   align-items: center;
@@ -306,6 +307,45 @@
 }
 .debug-sep {
   color: var(--text-tertiary);
+}
+
+/* ---------- 设置面板操作按钮行 ---------- */
+.panel-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+/* ---------- 设置面板表单网格 ---------- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.form-label {
+  font-size: .9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.form-input {
+  width: 100%;
+  padding: var(--density-control-pad);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color-strong);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  font: inherit;
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 
 /* ---------- About 列表 ---------- */

@@ -16,6 +16,8 @@ window.I18N = {
       systemUsers: '用户管理',
       systemRoles: '角色管理',
       settings: '设置',
+      appSettings: '应用设置',
+      userCenter: '个人中心',
     },
     common: {
       system: '跟随系统',
@@ -81,6 +83,23 @@ window.I18N = {
     footer: {
       hint: '提示：所有设置通过 localStorage 自动持久化，刷新页面不会丢失。',
     },
+    user: {
+      title: '个人设置',
+      sectionProfile: '基本信息',
+      sectionPreference: '偏好',
+      name: '姓名',
+      namePlaceholder: '请输入姓名',
+      email: '邮箱',
+      emailPlaceholder: '请输入邮箱',
+      phone: '手机号',
+      phonePlaceholder: '请输入手机号',
+      role: '角色',
+      rolePlaceholder: '请输入角色',
+      language: '界面语言',
+      languageDesc: '切换中英文显示',
+      save: '保存设置',
+      savedTip: '个人设置已保存',
+    },
   },
 
   'en-US': {
@@ -95,6 +114,8 @@ window.I18N = {
       settings: 'Settings',
       systemUsers: 'System Users',
       systemRoles: 'System Roles',
+      appSettings: 'Application Settings',
+      userCenter: 'User Center',
     },
     common: {
       system: 'Follow system',
@@ -159,6 +180,23 @@ window.I18N = {
     },
     footer: {
       hint: 'Tip: settings are persisted via localStorage and survive page refreshes.',
+    },
+    user: {
+      title: 'User Settings',
+      sectionProfile: 'Profile',
+      sectionPreference: 'Preference',
+      name: 'Name',
+      namePlaceholder: 'Enter your name',
+      email: 'Email',
+      emailPlaceholder: 'Enter your email',
+      phone: 'Phone',
+      phonePlaceholder: 'Enter your phone number',
+      role: 'Role',
+      rolePlaceholder: 'Enter your role',
+      language: 'Interface language',
+      languageDesc: 'Switch between Chinese and English',
+      save: 'Save',
+      savedTip: 'User settings saved',
     },
   },
 };

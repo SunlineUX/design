@@ -25,11 +25,11 @@
       { value: 'en-US', label: 'English' },
     ],
     themeColor: [
-      { value: 'indigo', label: 'Indigo', color: '#4f46e5' },
+      { value: 'indigo', label: 'Indigo', color: '#1369e2' },
       { value: 'emerald', label: 'Emerald', color: '#059669' },
       { value: 'rose', label: 'Rose', color: '#e11d48' },
       { value: 'amber', label: 'Amber', color: '#d97706' },
-      { value: 'sky', label: 'Sky', color: '#0284c7' },
+      { value: 'sky', label: 'Sky', color: '#02a6c7' },
     ],
     colorMode: [
       { value: 'light', label: 'Light' },

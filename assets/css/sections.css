@@ -1,0 +1,27 @@
+
+ .user-setting {
+   display: flex;
+   flex-direction: column;
+   gap: var(--space-sm);
+   padding: var(--space-md);
+   min-width: 240px;
+ }
+ .setting-row {
+   display: flex;
+   flex-direction: column;
+   padding-bottom: var(--space-md);
+   border-bottom: 1px solid var(--border-color);
+ }
+ .setting-row:last-child {
+   border-bottom: none;
+ }
+ .setting-row-label {
+    font-size: var(--font-size-sm);
+    padding-bottom: var(--space-sm);
+    color: var(--text-tertiary);
+ }
+ .radio-group-vertical{
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+ }

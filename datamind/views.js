@@ -15,7 +15,7 @@
   const HERE = new URL('./', document.currentScript.src).href;  // .../datamind/
 
   /* ---------- 缓存版本号：修改页面视图后刷新不生效时，把版本号 +1 ---------- */
-  const VER = '1';
+  const VER = '3';
 
   /* ---------- 本项目视图清单：新增页面在这里加一行 ---------- */
   const VIEWS = [
@@ -23,6 +23,8 @@
     'pages/AboutView.js',
     'pages/SystemUsersView.js',
     'pages/SystemRolesView.js',
+    'pages/UserCenterView.js',
+    './AppSettingView.js',
   ];
 
   /* ---------- 同步按序加载（须在 HTML 解析期间执行） ---------- */

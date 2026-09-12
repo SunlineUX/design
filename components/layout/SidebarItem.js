@@ -66,10 +66,10 @@
     template: `
       <div class="sidebar-item" :class="{ active: isActive, expanded: expanded, hasChildren: hasChildren }">
         <div class="sidebar-item-row" @click="handleClick">
-          <span class="sidebar-item-icon"><icon v-if="item.icon" :name="item.icon" :size="18" /></span>
+          <span class="sidebar-item-icon"><x-icon v-if="item.icon" :name="item.icon" :size="18" /></span>
           <span v-if="showLabel" class="sidebar-item-label">{{ label }}</span>
           <span v-if="hasChildren && showLabel" class="sidebar-item-arrow">
-            <icon :name="expanded ? 'chevronDown' : 'chevronRight'" :size="14" />
+            <x-icon :name="expanded ? 'ArrowDown' : 'ArrowRight'" :size="14" />
           </span>
         </div>
         <div v-if="hasChildren && expanded && showLabel" class="sidebar-children">

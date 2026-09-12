@@ -2,7 +2,7 @@
  * layout/AppLayout.js — 管理后台整体骨架
  *
  *   AppLayout
- *   ├── AppHeader（Logo / SidebarToggle / Breadcrumb / actions slot）
+ *   ├── AppHeader（Logo / SidebarControl / Breadcrumb / actions slot）
  *   ├── AppSidebar（SidebarItem 递归菜单）
  *   └── router-view（页面出口 + fade 过渡）
  *
@@ -20,6 +20,7 @@
       menuItems: { type: Array, required: true },
       collapsed: { type: Boolean, default: false },
       t: { type: Function, required: true },
+      config: { type: Object, default: () => ({}) },
     },
     emits: ['update:collapsed'],
     setup(props, { emit }) {
@@ -31,6 +32,7 @@
         <app-header
           :collapsed="collapsed"
           :t="t"
+          :brand="config.system"
           @toggle-sidebar="toggle"
         >
           <template #actions>

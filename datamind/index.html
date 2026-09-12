@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../assets/css/components.css" />
   <link rel="stylesheet" href="../assets/css/layout.css" />
   <link rel="stylesheet" href="../assets/font/iconfont.css" />
+  <link rel="stylesheet" href="../assets/css/sections.css" />
 
   <!-- 路由过渡 -->
   <style>
@@ -52,10 +53,10 @@
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/settings.js"></script>
   <script src="../assets/js/routes.js"></script>
-  <!-- 一个文件引入全部共享组件（清单见 assets/js/components/index.js 的 MANIFEST） -->
-  <script src="../assets/js/components/index.js?v=3"></script>
+  <!-- 一个文件引入全部共享组件（清单见 components/index.js 的 MANIFEST） -->
+  <script src="../components/index.js?v=9"></script>
   <!-- 本项目专属视图（清单见 datamind/views.js，不与其他项目共用） -->
-  <script src="./views.js?v=1"></script>
+  <script src="./views.js?v=3"></script>
 
   <!-- ============ 应用启动 ============ -->
   <script>
@@ -63,6 +64,33 @@
       'use strict';
       const { createApp, computed, ref } = window.Vue;
       const { createRouter, createWebHashHistory } = window.VueRouter;
+
+      /* 0. 基础配置 */
+      const appConfig = {
+        system: { logo: '../assets/logo.svg', name: 'Datamind' },
+        layout:{
+          layout: 'sideLayout',
+          header: {
+              mode: 'inherit',// dark, light, inherit
+              size: 'medium',// small, medium, large, 48px
+              showLogo: true,
+              actions: true,
+              flexBox: 'breadcrumb' // breadcrumb, menu, tabbar
+          },
+          sidebar: {
+              mode: 'inherit',// dark, light, inherit
+              size: 'medium',// small, medium, large, 48px
+              showLogo: true,
+              actions: true,
+              guide: 'menu' // menu, tabbar
+          },
+          pages:{
+              breadcrumb: false,
+              tabbar: false,
+              title: true,
+          }
+        }
+      };
 
       /* 1. 设置 & i18n */
       const settings = window.Settings.create();
@@ -75,18 +103,20 @@
        *    componentKey 对应 views/ 中自注册的视图组件名
        *    所有 path 用绝对路径；有 children 的项自动转为嵌套路由 */
       const menuRoutes = [
-        { key: 'home',   path: '/home',         label: 'nav.home',    icon: 'home',    componentKey: 'HomeView' },
-        { key: 'about',  path: '/about',        label: 'nav.about',   icon: 'about',   componentKey: 'AboutView' },
+        { key: 'home',   path: '/home',         label: 'nav.home',    icon: 'Home',    componentKey: 'HomeView' },
+        { key: 'about',  path: '/about',        label: 'nav.about',   icon: 'Compass',   componentKey: 'AboutView' },
         {
           key: 'system',
           path: '/system',
           label: 'nav.system',
-          icon: 'system',
+          icon: 'DeviceMonitor',
           children: [
-            { key: 'system-users', path: '/system/users', label: 'nav.systemUsers', icon: 'user',     componentKey: 'SystemUsersView' },
-            { key: 'system-roles', path: '/system/roles', label: 'nav.systemRoles', icon: 'settings', componentKey: 'SystemRolesView' },
+            { key: 'system-users', path: '/system/users', label: 'nav.systemUsers', icon: 'PersonSales',     componentKey: 'SystemUsersView' },
+            { key: 'system-roles', path: '/system/roles', label: 'nav.systemRoles', icon: 'UserInfo', componentKey: 'SystemRolesView' },
           ],
         },
+        { key: 'appsettings',  path: '/appsettings',        label: 'nav.appSettings',   icon: 'Setting',   componentKey: 'AppSettingsView' },
+        { key: 'user-center',  path: '/user-center',        label: 'nav.userCenter',    icon: 'UserInfo',  componentKey: 'UserCenterView' },
       ];
       const router = createRouter({
         history: createWebHashHistory(),
@@ -107,6 +137,8 @@
             collapsed,
             toggleCollapse,
             menuItems: menuRoutes,
+            // logo: { src: '../assets/logo.svg', name: 'Datamind' },
+            appConfig,
           };
         },
 
@@ -116,32 +148,16 @@
             :collapsed="collapsed"
             @update:collapsed="collapsed = $event"
             :t="t"
+            :config="appConfig"
           >
             <template #header-actions>
-              <!-- 语言切换 -->
-              <div class="segmented">
-                <button
-                  v-for="opt in enums.locale"
-                  :key="opt.value"
-                  :class="{ active: state.locale === opt.value }"
-                  @click="state.locale = opt.value"
-                >{{ opt.label }}</button>
-              </div>
-
-              <!-- 深浅模式 -->
-              <button class="header-action"
-                      :title="resolvedMode === 'dark' ? t('settings.options.dark') : t('settings.options.light')"
-                      @click="state.colorMode = resolvedMode === 'dark' ? 'light' : 'dark'">
-                <icon :name="resolvedMode === 'dark' ? 'moon' : 'sun'" :size="18" />
-              </button>
-
-              <!-- 设置 -->
-              <!--<button class="header-action" title="Settings">
-                <icon name="settings" :size="18" />
-              </button>-->
-
               <!-- 用户头像 -->
-              <div class="header-user">U</div>
+              <x-dropdown placement="bottom-end" trigger="hover" :close-on-click="false">
+                <div class="header-user" role="button" aria-label="用户设置">U</div>
+                <template #menu>
+                  <user-setting :t="t" />
+                </template>
+              </x-dropdown>
             </template>
           </app-layout>
         `,
