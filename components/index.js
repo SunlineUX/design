@@ -43,6 +43,7 @@
     ],
     layout: [
       'layout/Logo.js',
+      'layout/AppBrand.js',
       'layout/Breadcrumb.js',
       'layout/SidebarControl.js',
       'layout/SidebarItem.js',

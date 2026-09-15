@@ -13,9 +13,18 @@
       menuItems: { type: Array, required: true },
       collapsed: { type: Boolean, default: false },
       t: { type: Function, required: true },
+      brand: { type: Object, default: () => ({}) },
+      showSidebarControl: { type: Boolean, default: true },
     },
+    emits: ['toggle-sidebar'],
     template: `
       <aside class="app-sidebar" :class="{ collapsed: collapsed }">
+        <app-brand
+          :brand="brand"
+          :collapsed="collapsed"
+          :show-sidebar-control="showSidebarControl"
+          @toggle-sidebar="$emit('toggle-sidebar')"
+        />
         <div class="sidebar-menu">
           <sidebar-item
             v-for="item in menuItems"

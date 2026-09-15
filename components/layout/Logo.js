@@ -15,13 +15,14 @@
     props: {
       logo: { type: String, default: '' },
       name: { type: String, default: '' },
+      collapsed: { type: Boolean, default: false },
     },
     template: `
       <div class="logo">
         <span v-if="logo" class="logo-mark">
           <img :src="logo" :alt="name" />
         </span>
-        <span v-if="name" class="logo-text">{{ name }}</span>
+        <span v-if="!collapsed && name" class="logo-text">{{ name }}</span>
       </div>
     `,
   };

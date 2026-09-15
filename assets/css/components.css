@@ -357,7 +357,7 @@
   padding: 4px;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   box-shadow: var(--shadow-lg);
 }
 .x-dropdown--bottom-start .x-dropdown__menu { top: calc(100% + 6px); left: 0; }
