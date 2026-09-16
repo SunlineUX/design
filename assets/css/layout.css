@@ -406,6 +406,23 @@
   padding: 8px;
 }
 
+/* 收起模式：popover 内浮动子级菜单不受 collapsed 隐藏影响 */
+.sidebar-submenu-floating {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 180px;
+  padding: 4px;
+}
+.sidebar-submenu-floating .sidebar-item-label,
+.sidebar-submenu-floating .sidebar-item-arrow {
+  display: block;
+}
+.sidebar-submenu-floating .sidebar-item-row {
+  justify-content: flex-start;
+  padding: 8px 12px;
+}
+
 .app-layout--topLayout .app-body {
   display: block;
 }

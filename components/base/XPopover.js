@@ -25,14 +25,17 @@
       trigger: { type: String, default: 'click' }, // click | hover
       placement: { type: String, default: 'top' },  // top | bottom | left | right
       title: { type: String, default: '' },
-      showArrow: { type: Boolean, default: true },
+      showArrow: { type: Boolean, default: false },
       open: { type: Boolean, default: false },
     },
     emits: ['update:open'],
     setup(props, { emit }) {
-      const { ref, watch, onMounted, onUnmounted } = global.Vue;
+      const { ref, watch, nextTick, onMounted, onUnmounted } = global.Vue;
       const root = ref(null);
+      const panel = ref(null);
       const innerOpen = ref(props.open);
+      const panelStyle = ref({});
+      const actualPlacement = ref(props.placement);
       let hoverTimer = null;
 
       watch(() => props.open, v => { innerOpen.value = v; });
@@ -42,6 +45,20 @@
         emit('update:open', v);
       }
       function toggle() { setOpen(!innerOpen.value); }
+
+      function updatePosition() {
+        if (!panel.value || !root.value) return;
+        const result = global.XPopupPosition.update(
+          root.value.querySelector('.x-popover__trigger'),
+          panel.value,
+          props.placement,
+          10,
+        );
+        panelStyle.value = result.style;
+        actualPlacement.value = result.placement;
+      }
+
+      watch(innerOpen, v => { if (v) nextTick(updatePosition); });
 
       function onMouseEnter() {
         if (props.trigger !== 'hover') return;
@@ -54,9 +71,15 @@
         hoverTimer = setTimeout(() => setOpen(false), 100);
       }
 
+      function onPanelEnter() {
+        if (props.trigger !== 'hover') return;
+        clearTimeout(hoverTimer);
+      }
+
       function onDocMouseDown(e) {
         if (props.trigger !== 'click') return;
-        if (innerOpen.value && root.value && !root.value.contains(e.target)) {
+        if (innerOpen.value && root.value && !root.value.contains(e.target)
+          && panel.value && !panel.value.contains(e.target)) {
           setOpen(false);
         }
       }
@@ -67,16 +90,20 @@
       onMounted(() => {
         document.addEventListener('mousedown', onDocMouseDown, true);
         document.addEventListener('keydown', onDocKeyDown, true);
+        global.addEventListener('resize', updatePosition);
+        global.addEventListener('scroll', updatePosition, true);
       });
       onUnmounted(() => {
         document.removeEventListener('mousedown', onDocMouseDown, true);
         document.removeEventListener('keydown', onDocKeyDown, true);
+        global.removeEventListener('resize', updatePosition);
+        global.removeEventListener('scroll', updatePosition, true);
         clearTimeout(hoverTimer);
       });
 
       return {
-        root, innerOpen, toggle,
-        onMouseEnter, onMouseLeave,
+        root, panel, innerOpen, panelStyle, actualPlacement, toggle,
+        onMouseEnter, onMouseLeave, onPanelEnter,
       };
     },
     template: `
@@ -90,13 +117,15 @@
         <div class="x-popover__trigger" @click="trigger === 'click' ? toggle() : null">
           <slot />
         </div>
-        <transition name="x-pop">
-          <div v-if="innerOpen" class="x-popover__content" :class="'x-popover__content--' + placement">
+        <Teleport to="body">
+          <transition name="x-pop">
+          <div v-if="innerOpen" ref="panel" class="x-popover__content" :style="panelStyle" :class="'x-popover__content--' + actualPlacement" @mouseenter="onPanelEnter" @mouseleave="onMouseLeave">
             <div v-if="title" class="x-popover__title">{{ title }}</div>
             <div class="x-popover__body"><slot name="content" /></div>
             <span v-if="showArrow" class="x-popover__arrow" :class="'x-popover__arrow--' + placement"></span>
           </div>
-        </transition>
+          </transition>
+        </Teleport>
       </div>
     `,
   };

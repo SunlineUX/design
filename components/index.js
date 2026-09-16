@@ -31,6 +31,7 @@
   /* ---------- 共享组件清单：新增组件在这里加一行 ---------- */
   const MANIFEST = {
     base: [
+      'base/XPopupPosition.js',
       'base/XIcon.js',
       'base/XButton.js',
       'base/XCheckbox.js',

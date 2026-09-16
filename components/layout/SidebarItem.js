@@ -65,23 +65,52 @@
     },
     template: `
       <div class="sidebar-item" :class="{ active: isActive, expanded: expanded, hasChildren: hasChildren }">
-        <div class="sidebar-item-row" @click="handleClick">
-          <span class="sidebar-item-icon"><x-icon v-if="item.icon" :name="item.icon" :size="18" /></span>
-          <span v-if="showLabel" class="sidebar-item-label">{{ label }}</span>
-          <span v-if="hasChildren && showLabel" class="sidebar-item-arrow">
-            <x-icon :name="expanded ? 'ArrowDown' : 'ArrowRight'" :size="14" />
-          </span>
-        </div>
-        <div v-if="hasChildren && expanded && showLabel" class="sidebar-children">
-          <sidebar-item
-            v-for="child in item.children"
-            :key="child.key"
-            :item="child"
-            :t="t"
-            :collapsed="collapsed"
-            :level="level + 1"
-          />
-        </div>
+        <!-- 收起模式 + 无子级：tooltip 显示名称 -->
+        <x-tooltip v-if="!showLabel && !hasChildren" :content="label" placement="right">
+          <div class="sidebar-item-row" @click="handleClick">
+            <span class="sidebar-item-icon"><x-icon v-if="item.icon" :name="item.icon" :size="18" /></span>
+          </div>
+        </x-tooltip>
+
+        <!-- 收起模式 + 有子级：popover 显示子级菜单（不显示 tooltip） -->
+        <x-popover v-else-if="!showLabel && hasChildren" trigger="hover" placement="right" :show-arrow="true">
+          <div class="sidebar-item-row" @click="handleClick">
+            <span class="sidebar-item-icon"><x-icon v-if="item.icon" :name="item.icon" :size="18" /></span>
+          </div>
+          <template #content>
+            <div class="sidebar-submenu-floating">
+              <sidebar-item
+                v-for="child in item.children"
+                :key="child.key"
+                :item="child"
+                :t="t"
+                :collapsed="false"
+                :level="level + 1"
+              />
+            </div>
+          </template>
+        </x-popover>
+
+        <!-- 展开模式：原有逻辑 -->
+        <template v-else>
+          <div class="sidebar-item-row" @click="handleClick">
+            <span class="sidebar-item-icon"><x-icon v-if="item.icon" :name="item.icon" :size="18" /></span>
+            <span v-if="showLabel" class="sidebar-item-label">{{ label }}</span>
+            <span v-if="hasChildren && showLabel" class="sidebar-item-arrow">
+              <x-icon :name="expanded ? 'ArrowDown' : 'ArrowRight'" :size="14" />
+            </span>
+          </div>
+          <div v-if="hasChildren && expanded && showLabel" class="sidebar-children">
+            <sidebar-item
+              v-for="child in item.children"
+              :key="child.key"
+              :item="child"
+              :t="t"
+              :collapsed="collapsed"
+              :level="level + 1"
+            />
+          </div>
+        </template>
       </div>
     `,
   };
