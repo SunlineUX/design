@@ -39,7 +39,7 @@
     const route = {
       path: item.path,
       name: item.key,
-      meta: { title: item.label, key: item.key },
+      meta: { title: item.label, key: item.key, icon: item.icon },
     };
 
     if (item.children && item.children.length) {
@@ -48,7 +48,7 @@
       route.children = item.children.map(child => ({
         path: toChildPath(item.path, child.path),
         name: child.key,
-        meta: { title: child.label, key: child.key },
+        meta: { title: child.label, key: child.key, icon: child.icon },
         component:
           (global.ViewComponents && global.ViewComponents[child.componentKey])
           || { template: '<div style="padding:40px;color:var(--text-tertiary)"><h2>页面建设中</h2></div>' },

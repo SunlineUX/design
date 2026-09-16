@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Datamind</title>
-  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <title>中集金融 · 数据管理门户</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo/demo.png" />
 
 
   <!-- CSS -->
@@ -55,7 +55,7 @@
   <script src="../assets/js/routes.js"></script>
   <!-- 一个文件引入全部共享组件（清单见 components/index.js 的 MANIFEST） -->
   <script src="../components/index.js?v=9"></script>
-  <!-- 本项目专属视图（清单见 datamind/views.js，不与其他项目共用） -->
+  <!-- 本项目专属视图 -->
   <script src="./views.js?v=3"></script>
 
   <!-- ============ 应用启动 ============ -->
@@ -67,22 +67,21 @@
 
       /* 0. 基础配置 */
       const appConfig = {
-        system: { logo: '../assets/logo.svg', name: 'Datamind' },
+        system: { logo: '../assets/logo/demo.png', name: '数据管理门户' },
         layout:{
-          layout: 'sideLayout', // sideLayout, topLayout, mixLayout, blankLayout
+          layout: 'topLayout', // sideLayout, topLayout, mixLayout, blankLayout
           header: {
               mode: 'light',// inherit, dark, light, theme-dark
               size: 'medium',// small, medium, large, 48px
-              showLogo: false,
+              showLogo: true,
               actions: true,
-              flexBox: 'breadcrumb', // breadcrumb, menu, tabbar
-              name: 'Datamind2'
+              flexBox: 'breadcrumb' // breadcrumb, menu, tabbar
           },
           sidebar: {
               mode: 'inherit',// dark, light, inherit
               size: 'medium',// small, medium, large, 48px
-              showLogo: true,
-              actions: true,
+              showLogo: false,
+              actions: false,
               guide: 'menu' // menu, tabbar
           },
           pages:{
@@ -104,20 +103,56 @@
        *    componentKey 对应 views/ 中自注册的视图组件名
        *    所有 path 用绝对路径；有 children 的项自动转为嵌套路由 */
       const menuRoutes = [
-        { key: 'home',   path: '/home',         label: 'nav.home',    icon: 'Home',    componentKey: 'HomeView' },
-        { key: 'about',  path: '/about',        label: 'nav.about',   icon: 'Compass',   componentKey: 'AboutView' },
+        { key: 'home', path: '/home', label: 'nav.home', icon: 'Home', componentKey: 'HomeView' },
         {
-          key: 'system',
-          path: '/system',
-          label: 'nav.system',
-          icon: 'DeviceMonitor',
+          key: 'data-mall', path: '/data', label: 'nav.dataMall', icon: 'DataView',
           children: [
-            { key: 'system-users', path: '/system/users', label: 'nav.systemUsers', icon: 'PersonSales',     componentKey: 'SystemUsersView' },
-            { key: 'system-roles', path: '/system/roles', label: 'nav.systemRoles', icon: 'UserInfo', componentKey: 'SystemRolesView' },
+            { key: 'data-catalog', path: '/data/catalog', label: 'nav.dataCatalog', icon: 'Folder', componentKey: 'PortalView' },
+            { key: 'data-assets', path: '/data/assets', label: 'nav.dataAssets', icon: 'DataAnalysis', componentKey: 'PortalView' },
+            { key: 'data-apply', path: '/data/apply', label: 'nav.dataApply', icon: 'DocumentAdd', componentKey: 'PortalView' },
           ],
         },
-        { key: 'appsettings',  path: '/appsettings',        label: 'nav.appSettings',   icon: 'Setting',   componentKey: 'AppSettingsView' },
-        { key: 'user-center',  path: '/user-center',        label: 'nav.userCenter',    icon: 'UserInfo',  componentKey: 'UserCenterView' },
+        {
+          key: 'tool-mall', path: '/tool', label: 'nav.toolMall', icon: 'Tools',
+          children: [
+            { key: 'tool-reports', path: '/tool/reports', label: 'nav.reports', icon: 'Document', componentKey: 'PortalView' },
+            { key: 'tool-dashboards', path: '/tool/dashboards', label: 'nav.dashboards', icon: 'DataBoard', componentKey: 'PortalView' },
+            { key: 'tool-self-analysis', path: '/tool/self-analysis', label: 'nav.selfAnalysis', icon: 'DataAnalysis', componentKey: 'PortalView' },
+          ],
+        },
+        {
+          key: 'tickets', path: '/tickets', label: 'nav.tickets', icon: 'Tickets',
+          children: [
+            { key: 'ticket-my', path: '/tickets/my', label: 'nav.myTickets', icon: 'Document', componentKey: 'PortalView' },
+            { key: 'ticket-pending', path: '/tickets/pending', label: 'nav.pendingTickets', icon: 'Bell', componentKey: 'PortalView' },
+            { key: 'ticket-done', path: '/tickets/done', label: 'nav.doneTickets', icon: 'Success', componentKey: 'PortalView' },
+          ],
+        },
+        {
+          key: 'applications', path: '/applications', label: 'nav.applications', icon: 'Application',
+          children: [
+            { key: 'app-management', path: '/applications/management', label: 'nav.managementCockpit', icon: 'DataBoard', componentKey: 'PortalView' },
+            { key: 'app-decision', path: '/applications/decision', label: 'nav.decisionPortal', icon: 'Compass', componentKey: 'PortalView' },
+            { key: 'app-operations', path: '/applications/operations', label: 'nav.operationsSystem', icon: 'Monitor', componentKey: 'PortalView' },
+          ],
+        },
+        {
+          key: 'analysis', path: '/analysis', label: 'nav.analysis', icon: 'TrendCharts',
+          children: [
+            { key: 'analysis-overview', path: '/analysis/overview', label: 'nav.analysisOverview', icon: 'DataAnalysis', componentKey: 'PortalView' },
+            { key: 'analysis-reports', path: '/analysis/reports', label: 'nav.analysisReports', icon: 'Document', componentKey: 'PortalView' },
+          ],
+        },
+        {
+          key: 'system', path: '/system', label: 'nav.system', icon: 'Setting',
+          children: [
+            { key: 'system-users', path: '/system/users', label: 'nav.systemUsers', icon: 'PersonSales', componentKey: 'PortalView' },
+            { key: 'system-roles', path: '/system/roles', label: 'nav.systemRoles', icon: 'UserInfo', componentKey: 'PortalView' },
+            { key: 'system-permissions', path: '/system/permissions', label: 'nav.permissions', icon: 'Lock', componentKey: 'PortalView' },
+            { key: 'system-logs', path: '/system/logs', label: 'nav.operationLogs', icon: 'Document', componentKey: 'PortalView' },
+          ],
+        },
+        { key: 'user-center', path: '/user-center', label: 'nav.userCenter', icon: 'UserInfo', componentKey: 'PortalView' },
       ];
       const router = createRouter({
         history: createWebHashHistory(),

@@ -26,7 +26,7 @@
   const HERE = new URL('./', document.currentScript.src).href;  // .../components/
 
   /* ---------- 缓存版本号：修改组件后刷新页面不生效时，把版本号 +1 ---------- */
-  const VER = '9';
+  const VER = '10';
 
   /* ---------- 共享组件清单：新增组件在这里加一行 ---------- */
   const MANIFEST = {
@@ -51,6 +51,7 @@
       'layout/AppSidebar.js',
       'layout/AppHeader.js',
       'layout/AppLayout.js',
+      'layout/Tabbar.js',
     ],
     panels: [
       'panels/PanelCard.js',

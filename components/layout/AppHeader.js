@@ -16,7 +16,7 @@
       menuItems: { type: Array, default: () => [] },
       showMenu: { type: Boolean, default: false },
       showSidebarControl: { type: Boolean, default: true },
-      config: { type: Object, default: () => ({}) },
+      headerConfig: { type: Object, default: () => ({}) },
     },
     emits: ['toggle-sidebar'],
     setup(props) {
@@ -35,7 +35,7 @@
         if (item.path && router) router.push(item.path);
       };
       const bgMode = computed(() => {
-        const configured = props.config?.mode || props.config?.header?.mode || 'inherit';
+        const configured = props.headerConfig?.mode || 'inherit';
 
         return ['inherit', 'light', 'dark', 'theme-dark'].includes(configured)
           ? 'app-header_' + configured
@@ -52,36 +52,40 @@
             :collapsed="collapsed"
             :show-sidebar-control="showSidebarControl"
             @toggle-sidebar="$emit('toggle-sidebar')"
-            v-if="config?.showLogo"
+            v-if="headerConfig?.showLogo"
           />
-          <breadcrumb :t="t" />
         </div>
-        <nav v-if="showMenu" class="app-header-menu" aria-label="主导航">
-          <div
-            v-for="item in menuItems"
-            :key="item.key"
-            class="app-header-menu-item"
-            :class="{ active: isActive(item) }"
-          >
-            <button class="app-header-menu-link" type="button" @click="navigate(item)">
-              <x-icon v-if="item.icon" :name="item.icon" :size="16" />
-              <span>{{ label(item) }}</span>
-              <x-icon v-if="hasChildren(item)" name="ArrowDown" :size="13" />
-            </button>
-            <div v-if="hasChildren(item)" class="app-header-submenu">
-              <button
-                v-for="child in item.children"
-                :key="child.key"
-                class="app-header-submenu-link"
-                type="button"
-                @click="navigate(child)"
-              >
-                <x-icon v-if="child.icon" :name="child.icon" :size="16" />
-                <span>{{ label(child) }}</span>
+        <div class="app-header-center">
+          <breadcrumb v-if="headerConfig?.flexBox === 'breadcrumb'" :t="t" />
+          <tabbar v-if="headerConfig?.flexBox === 'tabbar' && !showMenu" :t="t" />
+          <nav v-if="showMenu" class="app-header-menu" aria-label="主导航">
+            <div
+              v-for="item in menuItems"
+              :key="item.key"
+              class="app-header-menu-item"
+              :class="{ active: isActive(item) }"
+            >
+              <button class="app-header-menu-link" type="button" @click="navigate(item)">
+                <x-icon v-if="item.icon" :name="item.icon" :size="16" />
+                <span>{{ label(item) }}</span>
+                <x-icon v-if="hasChildren(item)" name="ArrowDown" :size="13" />
               </button>
+              <div v-if="hasChildren(item)" class="app-header-submenu">
+                <button
+                  v-for="child in item.children"
+                  :key="child.key"
+                  class="app-header-submenu-link"
+                  type="button"
+                  @click="navigate(child)"
+                >
+                  <x-icon v-if="child.icon" :name="child.icon" :size="16" />
+                  <span>{{ label(child) }}</span>
+                </button>
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </div>
+        
         <div class="app-header-right">
           <slot name="actions" />
         </div>

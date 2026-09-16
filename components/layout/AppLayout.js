@@ -71,7 +71,7 @@
               :menu-items="headerMenuItems"
               :show-menu="false"
               :show-sidebar-control="true"
-              :config="config.header"
+              :header-config="config.layout.header"
               @toggle-sidebar="toggle"
             >
               <template #actions>
@@ -95,7 +95,7 @@
             :menu-items="headerMenuItems"
             :show-menu="isTopLayout || isMixLayout"
             :show-sidebar-control="isMixLayout"
-            :config="config.header"
+            :header-config="config.layout.header"
             @toggle-sidebar="toggle"
           >
             <template #actions>

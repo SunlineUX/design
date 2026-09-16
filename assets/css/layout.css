@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--density-page);
+  padding: 0 var(--space-md);
 }
 .app-header--light {
   background: #ffffff;
@@ -60,7 +60,7 @@
   border-bottom-color: #e5e7eb;
 }
 .app-header--dark {
-  background: #1f2937;
+  background: #333538;
   color: #f9fafb;
   border-bottom-color: #374151;
 }
@@ -68,6 +68,9 @@
   background: var(--color-primary-active);
   color: var(--text-inverse);
   border-bottom-color: var(--color-primary-active);
+}
+.app-header-center{
+  flex: 1;
 }
 .app-header--dark .app-header-menu-link,
 .app-header--theme-dark .app-header-menu-link,
