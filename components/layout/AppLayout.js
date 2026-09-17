@@ -58,6 +58,7 @@
           <app-sidebar
             :menu-items="sidebarMenuItems"
             :collapsed="collapsed"
+            :sidebar-config="config.layout.sidebar"
             :brand="config.system"
             :t="t"
             :show-sidebar-control="true"

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Datamind</title>
-  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <title>UID</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo/logo2.png" />
 
 
   <!-- CSS -->
@@ -50,7 +50,7 @@
   ============================================================ -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.prod.js"></script>
-  <script src="../assets/js/i18n.js"></script>
+  <script src="./i18n.js"></script>
   <script src="../assets/js/settings.js"></script>
   <script src="../assets/js/routes.js"></script>
   <!-- 一个文件引入全部共享组件（清单见 components/index.js 的 MANIFEST） -->
@@ -67,7 +67,7 @@
 
       /* 0. 基础配置 */
       const appConfig = {
-        system: { logo: '../assets/logo.svg', name: 'Datamind' },
+        system: { logo: '../assets/logo/logo2.png', name: 'UID' },
         layout:{
           layout: 'sideLayout', // sideLayout, topLayout, mixLayout, blankLayout
           header: {
@@ -75,18 +75,17 @@
               size: 'medium',// small, medium, large, 48px
               showLogo: false,
               actions: true,
-              flexBox: 'tabbar', // breadcrumb, menu, tabbar
-              name: 'Datamind2'
+              flexBox: 'breadcrumb', // breadcrumb, menu, tabbar
           },
           sidebar: {
               mode: 'inherit',// dark, light, inherit
               size: 'medium',// small, medium, large, 48px
               showLogo: true,
               actions: true,
-              // menu: {
-              //   icons: true,
-              //   type: 'inline'
-              // }
+              guide: 'menu', // menu, tabbar
+              menu: {
+                icons: false,
+              }
           },
           pages:{
               breadcrumb: false,
@@ -107,20 +106,36 @@
        *    componentKey 对应 views/ 中自注册的视图组件名
        *    所有 path 用绝对路径；有 children 的项自动转为嵌套路由 */
       const menuRoutes = [
-        { key: 'home',   path: '/home',         label: 'nav.home',    icon: 'Home',    componentKey: 'HomeView' },
-        { key: 'about',  path: '/about',        label: 'nav.about',   icon: 'Compass',   componentKey: 'AboutView' },
+        { key: 'design',   path: '/design',         label: 'nav.design',    icon: 'Component',    componentKey: 'HomeView' },
+        { key: 'principle',  path: '/principle',        label: 'nav.principle',   icon: 'Atom03',   componentKey: 'PrincipleView' },
         {
-          key: 'system',
-          path: '/system',
-          label: 'nav.system',
-          icon: 'DeviceMonitor',
+          key: 'base',
+          path: '/base',
+          label: 'nav.base',
+          icon: 'Bezier01',
           children: [
-            { key: 'system-users', path: '/system/users', label: 'nav.systemUsers', icon: 'PersonSales',     componentKey: 'SystemUsersView' },
-            { key: 'system-roles', path: '/system/roles', label: 'nav.systemRoles', icon: 'UserInfo', componentKey: 'SystemRolesView' },
+            { key: 'color', path: '/color', label: 'nav.color', icon: 'BubbleChart', componentKey: 'ColorView' },
+            { key: 'font', path: '/font', label: 'nav.font', icon: 'FileText', componentKey: 'FontView' },
+            { key: 'shadow', path: '/shadow', label: 'nav.shadow', icon: 'LayersThreeAlt', componentKey: 'ShadowView' },
           ],
         },
-        { key: 'appsettings',  path: '/appsettings',        label: 'nav.appSettings',   icon: 'Setting',   componentKey: 'AppSettingsView' },
-        { key: 'user-center',  path: '/user-center',        label: 'nav.userCenter',    icon: 'UserInfo',  componentKey: 'UserCenterView' },
+        {
+          key: 'normal',
+          path: '/normal',
+          label: 'nav.normal',
+          icon: 'Transform',
+          children: [
+            { key: 'button', path: '/button', label: 'nav.button', icon: 'Cartificate01', componentKey: 'ButtonView' },
+            { key: 'icon', path: '/icon', label: 'nav.icon', icon: 'IrrigationDitch', componentKey: 'IconView' },
+          ],
+        },
+        {
+          key: 'feedback',
+          path: '/feedback',
+          label: 'nav.feedback',
+          icon: 'Crown',
+          componentKey: 'FeedbackView',
+        }
       ];
       const router = createRouter({
         history: createWebHashHistory(),

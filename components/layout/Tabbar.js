@@ -25,19 +25,19 @@
 			const currentTab = computed(() => tabs.value.find(tab => tab.path === currentPath.value));
 
 			function ensureHomeTab() {
-				const homeTab = tabs.value.find(tab => tab.path === '/home') || {
-					path: '/home',
-					title: props.t('nav.home') || '首页',
-					icon: 'Home',
-					closable: false,
-				};
+			const homeTab = tabs.value.find(tab => tab.path === '/home') || {
+				path: '/home',
+				title: 'nav.home',
+				icon: 'Home',
+				closable: false,
+			};
 				tabs.value = [homeTab, ...tabs.value.filter(tab => tab.path !== '/home')];
 			}
 
 			function titleForRoute(routeValue) {
-				const matched = routeValue.matched && routeValue.matched[routeValue.matched.length - 1];
-				return props.t(matched?.meta?.title || 'nav.home') || '未命名页面';
-			}
+			const matched = routeValue.matched && routeValue.matched[routeValue.matched.length - 1];
+			return matched?.meta?.title || 'nav.home';
+		}
 
 			function iconForRoute(routeValue) {
 				const matched = routeValue.matched && routeValue.matched[routeValue.matched.length - 1];
@@ -116,9 +116,6 @@
 			function closeContextMenu() { contextMenu.value = null; }
 
 			watch(() => route.fullPath, () => addRouteTab(route));
-			watch(() => props.t, () => {
-				tabs.value = tabs.value.map(tab => ({ ...tab, title: tab.title }));
-			});
 
 			onMounted(() => {
 				ensureHomeTab();
@@ -155,7 +152,7 @@
 						@contextmenu.prevent.stop="openContextMenu($event, tab)"
 					>
 						<x-icon v-if="tab.icon && !tab.closable" :name="tab.icon" :size="14" />
-						<span>{{ tab.title }}</span>
+						<span>{{ t(tab.title) }}</span>
 						<span v-if="tab.closable" class="app-tab-close" role="button" aria-label="关闭页签" @click.stop="closeTab(tab)">×</span>
 					</button>
 				</div>

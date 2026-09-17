@@ -1,6 +1,6 @@
 /* ============================================================
  * layout/AppSidebar.js — 侧边栏
- *   遍历 menuItems 渲染 SidebarItem（递归）
+ *   遍历 menuItems 渲染 SideMenu（递归）
  *   自注册到 window.LayoutComponents
  * ============================================================ */
 (function (global) {
@@ -15,6 +15,7 @@
       t: { type: Function, required: true },
       brand: { type: Object, default: () => ({}) },
       showSidebarControl: { type: Boolean, default: true },
+      sidebarConfig: { type: Object, default: () => ({}) },
     },
     emits: ['toggle-sidebar'],
     template: `
@@ -26,12 +27,13 @@
           @toggle-sidebar="$emit('toggle-sidebar')"
         />
         <div class="sidebar-menu">
-          <sidebar-item
+          <side-menu
             v-for="item in menuItems"
             :key="item.key"
             :item="item"
             :t="t"
             :collapsed="collapsed"
+            :sidebar-config="sidebarConfig"
           />
         </div>
       </aside>

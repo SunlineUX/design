@@ -390,6 +390,8 @@
   gap: 6px;
   font-size: .9rem;
   color: var(--text-secondary);
+  height: 100%;
+  padding-left: var(--space-md);
 }
 
 .breadcrumb-item {
@@ -534,6 +536,11 @@
 .sidebar-item.has-children>.sidebar-item-row {
   background: transparent !important;
 }
+.sidebar-item.hasChildren .x-popover,
+.sidebar-item.hasChildren .x-popover__trigger {
+  width: 100%;
+}
+
 
 .sidebar-item-icon {
   display: inline-flex;
