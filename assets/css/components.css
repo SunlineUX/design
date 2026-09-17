@@ -263,7 +263,7 @@
   top: 0;
   z-index: 20;
   background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-color);
+  /* border-bottom: 1px solid var(--border-color); */
   backdrop-filter: saturate(180%) blur(8px);
 }
 .app-header-inner {
