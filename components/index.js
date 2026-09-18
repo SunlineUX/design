@@ -17,7 +17,8 @@
  *
  *   依赖顺序（MANIFEST 内的分组顺序）：
  *     Vue → Vue Router → i18n → settings → routes →
- *     base → layout → panels → 本文件 → 各项目 views.js → 应用启动
+ *     normal → enter → feedback → display → visual →
+ *     layout → panels → 本文件 → 各项目 views.js → 应用启动
  * ============================================================ */
 (function (global) {
   'use strict';
@@ -26,21 +27,50 @@
   const HERE = new URL('./', document.currentScript.src).href;  // .../components/
 
   /* ---------- 缓存版本号：修改组件后刷新页面不生效时，把版本号 +1 ---------- */
-  const VER = '10';
+  const VER = '13';
 
   /* ---------- 共享组件清单：新增组件在这里加一行 ---------- */
   const MANIFEST = {
     base: [
-      'base/XPopupPosition.js',
-      'base/XIcon.js',
-      'base/XButton.js',
-      'base/XCheckbox.js',
-      'base/XRadio.js',
-      'base/XSegmentedControl.js',
-      'base/XBadge.js',
-      'base/XDropdown.js',
-      'base/XPopover.js',
-      'base/XTooltip.js',
+      'base/Tabbar.js',
+      'base/ToolBar.js',
+    ],
+    normal: [
+      'normal/XIcon.js',
+      'normal/XButton.js',
+      'normal/XBadge.js',
+      'normal/XDivider.js',
+      'normal/XSpace.js',
+    ],
+    enter: [
+      'enter/XCheckbox.js',
+      'enter/XRadio.js',
+      'enter/XDropdown.js',
+      'enter/XSwitch.js',
+    ],
+    feedback: [
+      'feedback/XPopupPosition.js',
+      'feedback/XPopover.js',
+      'feedback/XTooltip.js',
+      'feedback/XModal.js',
+      'feedback/XMessage.js',
+      'feedback/XNotification.js',
+      'feedback/XProgress.js',
+      'feedback/XSpinner.js',
+      'feedback/XLoading.js',
+      'feedback/XAlert.js',
+    ],
+    display: [
+      'display/XSegmentedControl.js',
+      'display/XPictureBox.js',
+      'display/XCard.js',
+      'display/XTable.js',
+      'display/XCarousel.js',
+    ],
+    visual: [
+      'visual/XLineChart.js',
+      'visual/XBarChart.js',
+      'visual/XPieChart.js',
     ],
     layout: [
       'layout/Logo.js',
@@ -51,7 +81,9 @@
       'layout/AppSidebar.js',
       'layout/AppHeader.js',
       'layout/AppLayout.js',
-      'layout/Tabbar.js',
+      'layout/XFlex.js',
+      'layout/XSpliter.js',
+      'layout/XWaterfall.js',
     ],
     panels: [
       'panels/PanelCard.js',
@@ -63,12 +95,24 @@
     ],
   };
 
-  /* ---------- 同步按序加载（须在 HTML 解析期间执行） ---------- */
+  /* ---------- 合并所有组件为单个 script 标签写入（减少 HTTP 请求） ---------- */
   (function load() {
-    const write = src => document.write('<script src="' + src + '?v=' + VER + '"><\/script>');
-    MANIFEST.base.forEach(f => write(HERE + f));
-    MANIFEST.layout.forEach(f => write(HERE + f));
-    MANIFEST.panels.forEach(f => write(HERE + f));
+    const groups = ['base', 'normal', 'enter', 'feedback', 'display', 'visual', 'layout', 'panels'];
+    const files = [];
+    groups.forEach(g => { if (MANIFEST[g]) MANIFEST[g].forEach(f => files.push(HERE + f)); });
+
+    let combined = '';
+    files.forEach(src => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', src + '?v=' + VER, false); // 同步读取，保证执行顺序
+      try { xhr.send(); } catch (e) { return; }
+      if (xhr.status === 200 || xhr.status === 0) {
+        combined += '\n/* ===== ' + src + ' ===== */\n' + xhr.responseText + '\n';
+      }
+    });
+    // 转义内容中的 </script>，避免提前闭合当前标签
+    combined = combined.replace(/<\/script>/gi, '<\\/script>');
+    document.write('<script>' + combined + '<\/script>');
   })();
 
   /* ---------- PascalCase → kebab-case：XButton → x-button / SidebarItem → sidebar-item ---------- */

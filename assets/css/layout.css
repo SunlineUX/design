@@ -34,6 +34,12 @@
 .app-side-shell>.app-sidebar {
   height: 100vh;
   top: 0;
+  display: flex;
+  flex-direction: column;
+}
+.app-side-shell .app-logo-system {
+  height: 56px;
+  flex: none;
 }
 
 .app-main {
@@ -76,8 +82,10 @@
 }
 
 .app-header-center {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   height: 100%;
+  overflow: hidden;
 }
 
 /* ---------- Tabbar ---------- */
@@ -484,9 +492,6 @@
   transition: width var(--transition-base);
   overflow: hidden;
   position: sticky;
-  top: 56px;
-  height: calc(100vh - 56px);
-  overflow-y: auto;
 }
 
 .app-sidebar.collapsed {
@@ -506,6 +511,8 @@
   flex-direction: column;
   gap: 2px;
   padding: 0 var(--space-sm);
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* ---------- SidebarItem ---------- */
@@ -624,6 +631,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--density-gap);
+}
+
+.view-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.view-page > .panel-card {
+  margin-bottom: var(--space-lg);
 }
 
 /* ---------- PanelCard 相关 ---------- */

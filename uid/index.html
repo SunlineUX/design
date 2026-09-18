@@ -54,9 +54,9 @@
   <script src="../assets/js/settings.js"></script>
   <script src="../assets/js/routes.js"></script>
   <!-- 一个文件引入全部共享组件（清单见 components/index.js 的 MANIFEST） -->
-  <script src="../components/index.js?v=10"></script>
+  <script src="../components/index.js?v=13"></script>
   <!-- 本项目专属视图（清单见 datamind/views.js，不与其他项目共用） -->
-  <script src="./views.js?v=3"></script>
+  <script src="./views.js?v=5"></script>
 
   <!-- ============ 应用启动 ============ -->
   <script>
@@ -75,7 +75,7 @@
               size: 'medium',// small, medium, large, 48px
               showLogo: false,
               actions: true,
-              flexBox: 'breadcrumb', // breadcrumb, menu, tabbar
+              flexBox: 'tabbar', // breadcrumb, menu, tabbar
           },
           sidebar: {
               mode: 'inherit',// dark, light, inherit
@@ -106,7 +106,8 @@
        *    componentKey 对应 views/ 中自注册的视图组件名
        *    所有 path 用绝对路径；有 children 的项自动转为嵌套路由 */
       const menuRoutes = [
-        { key: 'design',   path: '/design',         label: 'nav.design',    icon: 'Component',    componentKey: 'HomeView' },
+        { key: 'home',   path: '/home',         label: 'nav.home',    icon: 'Component',    componentKey: 'HomeView' ,hidden: true},
+        { key: 'design',   path: '/design',         label: 'nav.design',    icon: 'Component',    componentKey: 'DesignView' },
         { key: 'principle',  path: '/principle',        label: 'nav.principle',   icon: 'Atom03',   componentKey: 'PrincipleView' },
         {
           key: 'base',
@@ -116,6 +117,8 @@
           children: [
             { key: 'color', path: '/color', label: 'nav.color', icon: 'BubbleChart', componentKey: 'ColorView' },
             { key: 'font', path: '/font', label: 'nav.font', icon: 'FileText', componentKey: 'FontView' },
+            { key: 'grid', path: '/grid', label: 'nav.grid', icon: 'Grid', componentKey: 'GridView' },
+            { key: 'size', path: '/size', label: 'nav.size', icon: 'Grid', componentKey: 'SizeView' },
             { key: 'shadow', path: '/shadow', label: 'nav.shadow', icon: 'LayersThreeAlt', componentKey: 'ShadowView' },
           ],
         },
@@ -127,6 +130,44 @@
           children: [
             { key: 'button', path: '/button', label: 'nav.button', icon: 'Cartificate01', componentKey: 'ButtonView' },
             { key: 'icon', path: '/icon', label: 'nav.icon', icon: 'IrrigationDitch', componentKey: 'IconView' },
+            { key: 'divider', path: '/divider', label: 'nav.divider', icon: 'IrrigationDitch', componentKey: 'DividerView' },
+            { key: 'space', path: '/space', label: 'nav.space', icon: 'IrrigationDitch', componentKey: 'SpaceView' },
+          ],
+        },
+        {
+          key: 'layout',
+          path: '/layout',
+          label: 'nav.layout',
+          icon: 'Crown',
+          children: [
+            { key: 'flexbox', path: '/flexbox', label: 'nav.flexbox', icon: 'IrrigationDitch', componentKey: 'FlexboxView' },
+            { key: 'spliter', path: '/spliter', label: 'nav.spliter', icon: 'IrrigationDitch', componentKey: 'SpliterView' },
+            { key: 'waterfall', path: '/waterfall', label: 'nav.waterfall', icon: 'IrrigationDitch', componentKey: 'WaterfallView' },
+          ],
+        },
+        {
+          key: 'enter',
+          path: '/enter',
+          label: 'nav.enter',
+          icon: 'Crown',
+          children: [
+            { key: 'input', path: '/input', label: 'nav.input', icon: 'IrrigationDitch', componentKey: 'InputView' },
+            { key: 'select', path: '/select', label: 'nav.select', icon: 'IrrigationDitch', componentKey: 'SelectView' },
+            { key: 'dropdown', path: '/dropdown', label: 'nav.dropdown', icon: 'IrrigationDitch', componentKey: 'DropdownView' },
+            { key: 'checkbox', path: '/checkbox', label: 'nav.checkbox', icon: 'IrrigationDitch', componentKey: 'CheckboxView' },
+            { key: 'radio', path: '/radio', label: 'nav.radio', icon: 'IrrigationDitch', componentKey: 'RadioView' },
+            { key: 'switch', path: '/switch', label: 'nav.switch', icon: 'IrrigationDitch', componentKey: 'SwitchView' },
+          ],
+        },
+        {
+          key: 'display',
+          path: '/display',
+          label: 'nav.display',
+          icon: 'Crown',
+          children: [
+            { key: 'card', path: '/card', label: 'nav.card', icon: 'IrrigationDitch', componentKey: 'CardView' },
+            { key: 'table', path: '/table', label: 'nav.table', icon: 'IrrigationDitch', componentKey: 'TableView' },
+            { key: 'carousel', path: '/carousel', label: 'nav.carousel', icon: 'IrrigationDitch', componentKey: 'CarouselView' },
           ],
         },
         {
@@ -134,8 +175,39 @@
           path: '/feedback',
           label: 'nav.feedback',
           icon: 'Crown',
-          componentKey: 'FeedbackView',
-        }
+          children: [
+            { key: 'modal', path: '/modal', label: 'nav.modal', icon: 'IrrigationDitch', componentKey: 'ModalView' },
+            { key: 'tooltip', path: '/tooltip', label: 'nav.tooltip', icon: 'IrrigationDitch', componentKey: 'TooltipView' },
+            { key: 'popover', path: '/popover', label: 'nav.popover', icon: 'IrrigationDitch', componentKey: 'PopoverView' },
+            { key: 'message', path: '/message', label: 'nav.message', icon: 'IrrigationDitch', componentKey: 'MessageView' },
+            { key: 'notification', path: '/notification', label: 'nav.notification', icon: 'IrrigationDitch', componentKey: 'NotificationView' },
+            { key: 'progress', path: '/progress', label: 'nav.progress', icon: 'IrrigationDitch', componentKey: 'ProgressView' },
+            { key: 'spinner', path: '/spinner', label: 'nav.spinner', icon: 'IrrigationDitch', componentKey: 'SpinnerView' },
+            { key: 'loading', path: '/loading', label: 'nav.loading', icon: 'IrrigationDitch', componentKey: 'LoadingView' },
+            { key: 'alert', path: '/alert', label: 'nav.alert', icon: 'IrrigationDitch', componentKey: 'AlertView' },
+          ],
+        },
+        {
+          key: 'template',
+          path: '/template',
+          label: 'nav.template',
+          icon: 'Transform',
+          children: [
+            { key: 'list', path: '/list', label: 'nav.list', icon: 'Cartificate01', componentKey: 'ListView' },
+            { key: 'detail', path: '/detail', label: 'nav.detail', icon: 'IrrigationDitch', componentKey: 'DetailView' },
+          ],
+        },
+        {
+          key: 'visual',
+          path: '/visual',
+          label: 'nav.visual',
+          icon: 'Crown',
+          children: [
+            { key: 'lineChart', path: '/lineChart', label: 'nav.lineChart', icon: 'Cartificate01', componentKey: 'LineChartView' },
+            { key: 'barChart', path: '/barChart', label: 'nav.barChart', icon: 'Cartificate01', componentKey: 'BarChartView' },
+            { key: 'pieChart', path: '/pieChart', label: 'nav.pieChart', icon: 'IrrigationDitch', componentKey: 'PieChartView' },
+          ],
+        },
       ];
       const router = createRouter({
         history: createWebHashHistory(),

@@ -75,7 +75,7 @@
       return { hasChildren, isActive, expanded, showLabel, handleClick, label, submenuMode, showIcon };
     },
     template: `
-      <div class="sidebar-item" :class="{ active: isActive, expanded: expanded, hasChildren: hasChildren }">
+      <div v-if="!item.hidden" class="sidebar-item" :class="{ active: isActive, expanded: expanded, hasChildren: hasChildren }">
         <!-- 收起模式 + 无子级：tooltip 显示名称 -->
         <x-tooltip v-if="!showLabel && !hasChildren" :content="label" placement="right">
           <div class="sidebar-item-row" @click="handleClick">

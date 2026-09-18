@@ -15,12 +15,48 @@
   const HERE = new URL('./', document.currentScript.src).href;  // .../datamind/
 
   /* ---------- 缓存版本号：修改页面视图后刷新不生效时，把版本号 +1 ---------- */
-  const VER = '3';
+  const VER = '5';
 
   /* ---------- 本项目视图清单：新增页面在这里加一行 ---------- */
   const VIEWS = [
     'pages/HomeView.js',
+    'pages/DesignView.js',
     'pages/PrincipleView.js',
+    'base/ColorView.js',
+    'base/FontView.js',
+    'base/GridView.js',
+    'base/SizeView.js',
+    'base/ShadowView.js',
+    'normal/ButtonView.js',
+    'normal/IconView.js',
+    'normal/DividerView.js',
+    'normal/SpaceView.js',
+    'normal/FlexboxView.js',
+    'normal/SpliterView.js',
+    'normal/WaterfallView.js',
+    'enter/InputView.js',
+    'enter/SelectView.js',
+    'enter/DropdownView.js',
+    'enter/CheckboxView.js',
+    'enter/RadioView.js',
+    'enter/SwitchView.js',
+    'display/CardView.js',
+    'display/TableView.js',
+    'display/CarouselView.js',
+    'feedback/ModalView.js',
+    'feedback/TooltipView.js',
+    'feedback/PopoverView.js',
+    'feedback/MessageView.js',
+    'feedback/NotificationView.js',
+    'feedback/ProgressView.js',
+    'feedback/SpinnerView.js',
+    'feedback/LoadingView.js',
+    'feedback/AlertView.js',
+    'template/ListView.js',
+    'template/DetailView.js',
+    'visual/LineChartView.js',
+    'visual/BarChartView.js',
+    'visual/PieChartView.js',
   ];
 
   /* ---------- 同步按序加载（须在 HTML 解析期间执行） ---------- */
