@@ -21,10 +21,10 @@
       max: { type: Number, default: 90 },
     },
     setup(props) {
-      const { ref, onMounted, onUnmounted } = global.Vue;
+      const { ref } = global.Vue;
       const size = ref(props.defaultSize);
       const dragging = ref(false);
-      let containerEl = null;
+      const containerEl = ref(null);
 
       function onMouseDown(e) {
         e.preventDefault();
@@ -33,8 +33,8 @@
         document.addEventListener('mouseup', onMouseUp);
       }
       function onMouseMove(e) {
-        if (!containerEl) return;
-        const rect = containerEl.getBoundingClientRect();
+        if (!containerEl.value) return;
+        const rect = containerEl.value.getBoundingClientRect();
         let pct;
         if (props.direction === 'horizontal') {
           pct = ((e.clientX - rect.left) / rect.width) * 100;
@@ -48,8 +48,6 @@
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
       }
-
-      onMounted(() => {});
 
       return { size, dragging, onMouseDown, containerEl };
     },

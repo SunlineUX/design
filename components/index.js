@@ -81,7 +81,7 @@
       'layout/AppSidebar.js',
       'layout/AppHeader.js',
       'layout/AppLayout.js',
-      'layout/XFlex.js',
+      'layout/XFlexbox.js',
       'layout/XSpliter.js',
       'layout/XWaterfall.js',
     ],

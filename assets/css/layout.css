@@ -634,54 +634,11 @@
 }
 
 .view-page {
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: 0 auto;
 }
 .view-page > .panel-card {
   margin-bottom: var(--space-lg);
-}
-
-/* ---------- PanelCard 相关 ---------- */
-.panel-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-
-.panel-card-title {
-  padding: 16px 20px;
-  font-weight: 600;
-  font-size: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
-}
-
-.panel-card-body {
-  padding: 16px 20px;
-}
-
-.panel-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
-  padding: 8px 0;
-}
-
-.panel-row+.panel-row {
-  border-top: 1px dashed var(--border-color);
-}
-
-.panel-row-label {
-  display: flex;
-  flex-direction: column;
-}
-
-.panel-row-title {
-  font-weight: 500;
-  font-size: .9rem;
 }
 
 /* 调试信息行 */
