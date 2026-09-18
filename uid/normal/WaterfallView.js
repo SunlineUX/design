@@ -30,25 +30,32 @@
         { h: 130, bg: 'var(--color-info)' },
         { h: 95, bg: 'var(--color-warning)' },
       ];
-      return { t, columns, columnOptions, items };
+      const cDemo = `<x-waterfall :columns="3" :gap="12">
+  <div v-for="(item, i) in items" :key="i">
+    {{ i + 1 }}
+  </div>
+</x-waterfall>`;
+      return { t, columns, columnOptions, items, cDemo };
     },
     template: `
       <div class="view-page">
         <h1 class="view-title">{{ t('nav.waterfall') }}</h1>
         <p class="text-secondary">瀑布流布局，基于 CSS Columns，自动按高度填充。</p>
 
-        <panel-card title="瀑布流演示">
-          <div style="margin-bottom:16px">
-            <span style="color:var(--text-tertiary);font-size:13px;margin-right:12px">列数：</span>
-            <x-segmented-control v-model="columns" :options="columnOptions" />
-          </div>
-          <x-waterfall :columns="columns" :gap="12">
-            <div v-for="(item, i) in items" :key="i"
-              :style="{ background: item.bg, height: item.h + 'px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 600 }">
-              {{ i + 1 }}
+        <x-waterfall :columns="1" :gap="16">
+          <x-demo-block title="瀑布流演示" :code="cDemo">
+            <div style="margin-bottom:16px">
+              <span style="color:var(--text-tertiary);font-size:13px;margin-right:12px">列数：</span>
+              <x-segmented-control v-model="columns" :options="columnOptions" />
             </div>
-          </x-waterfall>
-        </panel-card>
+            <x-waterfall :columns="columns" :gap="12">
+              <div v-for="(item, i) in items" :key="i"
+                :style="{ background: item.bg, height: item.h + 'px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 600 }">
+                {{ i + 1 }}
+              </div>
+            </x-waterfall>
+          </x-demo-block>
+        </x-waterfall>
       </div>
     `,
   };

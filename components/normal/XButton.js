@@ -9,12 +9,12 @@
 
   global.XComponents.XButton = {
     props: {
-      variant: { type: String, default: 'default' }, // default | primary | ghost | link | warning
+      variant: { type: String, default: 'default' }, // default | primary | ghost | link | warning | danger
       size: { type: String, default: 'md' },          // sm | md | lg
       disabled: { type: Boolean, default: false },
     },
     template: `
-      <button
+      <span
         :class="[
           'btn',
           variant === 'primary' && 'btn-primary',
@@ -29,7 +29,7 @@
         @click="$emit('click', $event)"
       >
         <slot />
-      </button>
+      </span>
     `,
   };
 })(window);

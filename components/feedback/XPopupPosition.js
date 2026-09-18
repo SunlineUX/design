@@ -34,6 +34,18 @@
     },
 
     point(placement, trigger, panel, gap) {
+      if (placement === 'bottom-start') {
+        return { left: trigger.left, top: trigger.bottom + gap };
+      }
+      if (placement === 'bottom-end') {
+        return { left: trigger.right - panel.width, top: trigger.bottom + gap };
+      }
+      if (placement === 'top-start') {
+        return { left: trigger.left, top: trigger.top - panel.height - gap };
+      }
+      if (placement === 'top-end') {
+        return { left: trigger.right - panel.width, top: trigger.top - panel.height - gap };
+      }
       if (placement === 'bottom') {
         return { left: trigger.left + (trigger.width - panel.width) / 2, top: trigger.bottom + gap };
       }
@@ -55,7 +67,11 @@
     },
 
     opposite(placement) {
-      return { top: 'bottom', bottom: 'top', left: 'right', right: 'left' }[placement] || 'top';
+      return {
+        top: 'bottom', bottom: 'top', left: 'right', right: 'left',
+        'bottom-start': 'top-start', 'bottom-end': 'top-end',
+        'top-start': 'bottom-start', 'top-end': 'bottom-end',
+      }[placement] || 'top';
     },
   };
 })(window);

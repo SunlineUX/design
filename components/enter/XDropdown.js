@@ -31,9 +31,12 @@
     },
     emits: ['update:open', 'select'],
     setup(props, { emit }) {
-      const { ref, watch, onMounted, onUnmounted } = global.Vue;
+      const { ref, watch, nextTick, onMounted, onUnmounted } = global.Vue;
       const root = ref(null);
+      const panel = ref(null);
       const innerOpen = ref(props.open);
+      const panelStyle = ref({});
+      const actualPlacement = ref(props.placement);
       let closeTimer = null;
 
       // 受控（v-model:open）与非受控两种模式
@@ -56,9 +59,30 @@
           closeTimer = setTimeout(() => setOpen(false), 80);
         }
       }
+      function onPanelEnter() {
+        if (props.trigger !== 'hover') return;
+        clearTimeout(closeTimer);
+      }
+
+      function updatePosition() {
+        if (!panel.value || !root.value) return;
+        const triggerEl = root.value.querySelector('.x-dropdown__trigger');
+        if (!triggerEl) return;
+        const result = global.XPopupPosition.update(
+          triggerEl,
+          panel.value,
+          props.placement,
+          6,
+        );
+        panelStyle.value = result.style;
+        actualPlacement.value = result.placement;
+      }
+
+      watch(innerOpen, v => { if (v) nextTick(updatePosition); });
 
       function onDocMouseDown(e) {
-        if (innerOpen.value && root.value && !root.value.contains(e.target)) {
+        if (innerOpen.value && root.value && !root.value.contains(e.target)
+          && panel.value && !panel.value.contains(e.target)) {
           setOpen(false);
         }
       }
@@ -77,14 +101,18 @@
       onMounted(() => {
         document.addEventListener('mousedown', onDocMouseDown, true);
         document.addEventListener('keydown', onDocKeyDown, true);
+        global.addEventListener('resize', updatePosition);
+        global.addEventListener('scroll', updatePosition, true);
       });
       onUnmounted(() => {
         document.removeEventListener('mousedown', onDocMouseDown, true);
         document.removeEventListener('keydown', onDocKeyDown, true);
+        global.removeEventListener('resize', updatePosition);
+        global.removeEventListener('scroll', updatePosition, true);
         clearTimeout(closeTimer);
       });
 
-      return { root, innerOpen, toggle, openOnHover, closeOnHover, onMenuClick };
+      return { root, panel, innerOpen, panelStyle, actualPlacement, toggle, openOnHover, closeOnHover, onPanelEnter, onMenuClick };
     },
     template: `
       <div
@@ -97,11 +125,22 @@
         <div class="x-dropdown__trigger" @click="toggle">
           <slot />
         </div>
-        <transition name="x-drop">
-          <div v-if="innerOpen" class="x-dropdown__menu" @click="onMenuClick">
-            <slot name="menu" />
-          </div>
-        </transition>
+        <Teleport to="body">
+          <transition name="x-drop">
+            <div
+              v-if="innerOpen"
+              ref="panel"
+              class="x-dropdown__menu"
+              :class="'x-dropdown__menu--' + actualPlacement"
+              :style="panelStyle"
+              @click="onMenuClick"
+              @mouseenter="onPanelEnter"
+              @mouseleave="closeOnHover"
+            >
+              <slot name="menu" />
+            </div>
+          </transition>
+        </Teleport>
       </div>
     `,
   };

@@ -27,7 +27,7 @@
   const HERE = new URL('./', document.currentScript.src).href;  // .../components/
 
   /* ---------- 缓存版本号：修改组件后刷新页面不生效时，把版本号 +1 ---------- */
-  const VER = '13';
+  const VER = '16';
 
   /* ---------- 共享组件清单：新增组件在这里加一行 ---------- */
   const MANIFEST = {
@@ -46,6 +46,7 @@
       'enter/XCheckbox.js',
       'enter/XRadio.js',
       'enter/XDropdown.js',
+      'enter/XSelect.js',
       'enter/XSwitch.js',
     ],
     feedback: [
@@ -64,6 +65,7 @@
       'display/XSegmentedControl.js',
       'display/XPictureBox.js',
       'display/XCard.js',
+      'display/XDemoBlock.js',
       'display/XTable.js',
       'display/XCarousel.js',
     ],

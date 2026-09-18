@@ -15,29 +15,38 @@
       const list = ref([{ label: '选项 A', checked: true }, { label: '选项 B', checked: false }, { label: '选项 C', checked: true }]);
       const allChecked = computed(() => list.value.every(i => i.checked));
       const toggleAll = () => list.value.forEach(i => i.checked = !allChecked.value);
-      return { t, checked1, checked2, list, allChecked, toggleAll };
+      const cSingle = `<x-checkbox v-model="checked1">已勾选</x-checkbox>
+<x-checkbox v-model="checked2">未勾选</x-checkbox>
+<x-checkbox :model-value="true" disabled>禁用</x-checkbox>`;
+      const cGroup = `<x-checkbox :model-value="allChecked" @change="toggleAll">全选</x-checkbox>
+<x-checkbox v-for="(item, i) in list" :key="i" v-model="item.checked">
+  {{ item.label }}
+</x-checkbox>`;
+      return { t, checked1, checked2, list, allChecked, toggleAll, cSingle, cGroup };
     },
     template: `
       <div class="view-page">
         <h1 class="view-title">{{ t('nav.checkbox') }}</h1>
         <p class="text-secondary">复选框，支持单个、分组、全选。</p>
 
-        <panel-card title="单个复选框">
-          <x-space vertical size="md">
-            <x-checkbox v-model="checked1">已勾选</x-checkbox>
-            <x-checkbox v-model="checked2">未勾选</x-checkbox>
-            <x-checkbox :model-value="true" disabled>禁用-勾选</x-checkbox>
-            <x-checkbox :model-value="false" disabled>禁用-未勾选</x-checkbox>
-          </x-space>
-        </panel-card>
+        <x-waterfall :columns="2" :gap="16">
+          <x-demo-block title="单个复选框" :code="cSingle">
+            <x-space vertical size="md">
+              <x-checkbox v-model="checked1">已勾选</x-checkbox>
+              <x-checkbox v-model="checked2">未勾选</x-checkbox>
+              <x-checkbox :model-value="true" disabled>禁用-勾选</x-checkbox>
+              <x-checkbox :model-value="false" disabled>禁用-未勾选</x-checkbox>
+            </x-space>
+          </x-demo-block>
 
-        <panel-card title="全选 / 分组">
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <x-checkbox :model-value="allChecked" @change="toggleAll">全选</x-checkbox>
-            <x-divider size="sm" />
-            <x-checkbox v-for="(item, i) in list" :key="i" v-model="item.checked">{{ item.label }}</x-checkbox>
-          </div>
-        </panel-card>
+          <x-demo-block title="全选 / 分组" :code="cGroup">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <x-checkbox :model-value="allChecked" @change="toggleAll">全选</x-checkbox>
+              <x-divider size="sm" />
+              <x-checkbox v-for="(item, i) in list" :key="i" v-model="item.checked">{{ item.label }}</x-checkbox>
+            </div>
+          </x-demo-block>
+        </x-waterfall>
       </div>
     `,
   };

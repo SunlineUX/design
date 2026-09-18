@@ -11,26 +11,33 @@
       const { inject, ref } = global.Vue;
       const t = inject('t');
       const show = ref(true);
-      return { t, show };
+      const cAlert = `<x-alert type="info" title="信息提示">这是一条信息提示。</x-alert>
+<x-alert type="success" title="成功提示">操作已成功完成。</x-alert>`;
+      const cClosable = `<x-alert type="warning" title="注意" closable @close="show = false">
+  可关闭的警告
+</x-alert>`;
+      return { t, show, cAlert, cClosable };
     },
     template: `
       <div class="view-page">
         <h1 class="view-title">{{ t('nav.alert') }}</h1>
         <p class="text-secondary">警告提示横幅，用于展示重要信息。</p>
 
-        <panel-card title="四种类型">
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <x-alert type="info" title="信息提示">这是一条信息提示。</x-alert>
-            <x-alert type="success" title="成功提示">操作已成功完成。</x-alert>
-            <x-alert type="warning" title="警告提示">请注意，存在潜在风险。</x-alert>
-            <x-alert type="error" title="错误提示">操作失败，请重试。</x-alert>
-          </div>
-        </panel-card>
+        <x-waterfall :columns="1" :gap="16">
+          <x-demo-block title="四种类型" :code="cAlert">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <x-alert type="info" title="信息提示">这是一条信息提示。</x-alert>
+              <x-alert type="success" title="成功提示">操作已成功完成。</x-alert>
+              <x-alert type="warning" title="警告提示">请注意，存在潜在风险。</x-alert>
+              <x-alert type="error" title="错误提示">操作失败，请重试。</x-alert>
+            </div>
+          </x-demo-block>
 
-        <panel-card title="可关闭">
-          <x-alert v-if="show" type="warning" title="注意" closable @close="show = false">这是一条可关闭的警告提示，点击右侧 × 关闭。</x-alert>
-          <x-button v-else size="sm" @click="show = true">重新显示</x-button>
-        </panel-card>
+          <x-demo-block title="可关闭" :code="cClosable">
+            <x-alert v-if="show" type="warning" title="注意" closable @close="show = false">这是一条可关闭的警告提示，点击右侧 × 关闭。</x-alert>
+            <x-button v-else size="sm" @click="show = true">重新显示</x-button>
+          </x-demo-block>
+        </x-waterfall>
       </div>
     `,
   };
